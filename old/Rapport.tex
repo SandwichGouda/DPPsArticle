@@ -1,0 +1,1230 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\usepackage{parskip}
+\usepackage{geometry}
+
+\usepackage{titling}
+
+\usepackage{comment}
+
+\usepackage{cite}
+
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\usepackage{svg}
+
+\newcommand{\itm}{$\triangleright$} % Caractère à placer en début des listes
+\newcommand{\q}{\large \textbf{Question :} \quad}
+\renewcommand{\r}{\normalsize \bigskip \bigskip}
+\newcommand{\n}{\large \textbf{Note :} \quad}
+\newcommand{\rem}{\large \textbf{Remarque :} \quad}
+\newcommand{\fact}{\bigskip \bigskip}
+
+\renewcommand\thesection{\Roman{section}}
+
+\renewcommand{\labelenumi}{\theenumi)}
+\renewcommand{\labelenumii}{\theenumii)}
+\renewcommand{\labelenumiii}{\theenumiii)}
+
+\let\oldsum\sum
+\renewcommand{\sum}{\oldsum\limits}
+
+% \pagenumbering{gobble}
+
+% \UseRawInputEncoding
+
+\begin{document}
+
+\newgeometry{left = 1in, right = 1in, top = 4in}
+
+\title{\textbf{État de l'art}}
+\author{Transport optimal et processus ponctuels déterminantaux}
+\date{RECH201 - William DRIOT}
+
+\vfill 
+
+\maketitle
+
+\vfill
+
+\newpage
+
+\newgeometry{left = 1in, right = 1in, top = 1in}
+
+\tableofcontents
+
+% Schrijven, misschien/mogelijk laater te verstaan
+
+\newpage
+
+Classons par ordre d'importance les parties du sommaire :
+
+\begin{itemize}
+
+  \item Les trois première sous-parties (I.1, I.2, I.3) (préliminaires, généralités sur les processus ponctuels et analyse fonctionnelle en vue des déterminantaux) posent des jalons théorique sans lesquels la suite n'a pas de sens.
+
+  \item Les deux parties suivantes (I.4, I.5) (processus déterminantaux, noyaux de Ginibre et de Bergman) contiennent des résultats centraux qui seront de la plus haute importance pour la suite.
+
+  \item Les deux parties suivantes (Transport optimal, Existence) sont des jalons théoriques sans lesquels on ne peut pas travailler. 
+  
+  \item Au vu des décisions que nous avons prises très récemment quant à l'orientation des recherches au second semestre, il s'avère que, dans (II.2, II.3), les parties sur la monotonicité cyclique et cas de la dimension 1 contiennent des résultats ne seront pas aussi centraux pour la suite que le reste.
+
+  \item (II.5) contient des résultats cruciaux sur le transport optimal entre DPPs. S'il ne fallait en lire qu'une seule, je pense que ce serait celle-ci.
+
+\end{itemize}
+
+\section{Processus ponctuels}
+
+\subsection{Préliminaires}
+
+Les références pour cette partie sont : \cite{TopologieGénéraleEspaceNormésHassan2021}, \cite{PPBeyond2023}
+
+La topologie est un domaine voisin des probabilités, et en parcourant la littérature, les chercheurs ne se gênent pas pour faire souvent appel à aux notions qui vont suivre. Sans bases solides, il est parfois difficile de les suivre. 
+
+\textbf{Définition :} Soit $\mathcal X$ un ensemble. Une \textit{topologie} $\mathcal T$ sur $\mathcal X$ est une collection $ \{ \mathcal O_i, i\in I \} $ de parties de $\mathcal X$, telles que 
+
+(i) $\mathcal X, \emptyset \in \mathcal T$ \qquad (ii) $ \displaystyle \forall (\mathcal O_i)_{i\in I} \in \mathcal T^I, \bigcup_{i\in I} O_i \in \mathcal T$ \qquad (iii) $ \displaystyle \forall (O_1, ..., O_n) \in \mathcal T^n, \bigcap_{i=1}^n O_i \in \mathcal T $
+
+Bref, $\mathcal T$ contient $\mathcal X, \emptyset$, est stable par union quelconque et par intersection \textit{finie}.
+
+Les $\mathcal O \in \mathcal T$ sont appelées \textit{ouverts} de $\mathcal X$, et $(\mathcal X, \mathcal T)$ est alors un \textit{espace topologique}.
+
+\textbf{Proposition :} Une intersection de deux topologies est une topologie. 
+
+\textbf{Corollaire :} On peut toujours définir une topologie à partir d'une propriété $\mathcal P$ quelconque, en définissant la plus petite topologie vérifiant $\mathcal P$, qui existe bien en prenant l'intersection de toutes les topologies vérifiant $\mathcal P$. (Si $\mathcal P$ n'a aucun rapport avec $\mathcal X$, on obtient juste la topologie grossière, décrite juste-après). 
+
+Ceci sera utile plus loin pour définir les processus ponctuels.
+
+\textbf{Exemples :} \begin{itemize}
+
+  \item Il existe toujours des topologies, tout ensemble en est doté d'au moins deux : $ \{ \emptyset, \mathcal X \} $ est toujours une topologie, appelée \textit{topologie grossière}, et l'ensemble $\mathcal P(\mathcal X)$ des parties de $\mathcal X $ est aussi toujours une topologie, appelée \textit{topologie discrète} (ou topologie des parties). $ (\mathcal X, \mathcal T_{\mathcal X}) $ est alors un espace \textit{discret}.
+
+  \item Une topologie $ \mathcal T_{\mathcal X} $ est dite \textit{plus fine} qu'une autre $ \mathcal T_{\mathcal X}' $ si elle a plus d'ouverts (i.e., si $T_{\mathcal X}' \subset T_{\mathcal X}$). La topologie grossière est donc la moins fine, et la topologie discrète la plus fine.
+
+  \item Étant donné un ensemble $\{ A_i, i \in I \}$ de parties de $\mathcal X$, on peut donc définir la plus petite topologie contenant les $A_i$, elle est appelée \textit{topologie engendrée par les} $A_i$.
+
+  \item Un espace métrique $(E,d)$ est alors naturellement muni de la topologie engendrée par ses boules ouvertes. En particulier, ceci vaut pour les espaces vectoriels normés : on les appelle espace vectoriels topologiques. En particulier ceci vaut pour les espaces de Banach, de Hilbert, et les espaces usuels tels que $\mathbf R^n $ ou $ \mathbf C^n $. Un espace topologique $(X,\mathcal T)$ sur lequel on peut définir une distance telle que la topologie induite par la structure d'espace métrique soit exactement la topologie $\mathcal T$ est dit \textit{métrisable}. 
+
+  \item Un espace topologique $ (\mathcal X, \mathcal T) $ est dit \textit{métrisable} si on peut définir sur lui une distance dont la topologie induite est $ \mathcal T $
+
+  \item Une application $ f : (\mathcal X, \mathcal T_{\mathcal X}) \to (\mathcal Y, \mathcal T_{\mathcal Y}) $ est dite \textit{continue} si pour tout $ \mathcal O \in \mathcal T_{\mathcal Y}, f^{-1}(\mathcal O) \in \mathcal T_{\mathcal X} $.
+
+  \item Étant donnée une famille $ (f_i)_{i\in I} $ d'applications définies sur $\mathcal X$ à valeurs dans $(\mathcal Y, \mathcal T_{\mathcal Y}) $, on peut alors définir la plus petite topologie $\mathcal T_{\mathcal X}$ sur $ \mathcal X $ rendant toutes les $f_i$ continues. 
+
+  \item On définit aussi les notions topologiques usuelles de manière analogue (fermé, adhérence, intérieur, voisinage...) de sorte à retrouver les définitions usuelles sur les espaces métriques. La définition de compacité, donnée plus loin, requiert la propriété de Borel-Lebesgue.
+
+  \item Dans un espace vectoriel normé, on dit que deux normes $\|\cdot \|_1$ et $\|\cdot \|_2$ sont \textit{équivalentes} s'il existe $\alpha, \beta > 0$ tels que $\alpha \|\cdot \|_1 \leqslant \|\cdot \|_2 \leqslant \beta \|\cdot \|_1 $. Deux normes sont équivalentes si et seulement si elles induisent la même topologie. Pour le voir, il faut observer que cela équivaut, par linéarité, au fait que $ \mathrm{Id} : (E,\|\cdot \|_1) \to (E,\|\cdot \|_2) $ est un \textit{homéomorphisme}, i.e, est bijective et continue de réciproque continue. Par définition de la continuité, cela signifie que tout ouvert de la première topologie est un ouvert de la seconde et réciproquement. 
+
+  \item Tout espace topologique induit une structure d'espace topologique sur chacune de ses parties, en prenant comme ouverts de cette dernière partie $A$ les intersections des ouverts de l'espace entier avec $A$. 
+
+\end{itemize}
+
+\medskip
+
+\textbf{Définition :} Soit $(E,d)$ un espace métrique. On dit que c'est un espace \textit{polonais} s'il est séparable et complet.
+
+\begin{comment}
+
+\textbf{Définition :} Soit $(X,\mathcal T)$ un espace topologique. On dit que c'est un espace \textit{polonais} s'il est métrisable, et si l'espace métrique sous-jacent est polonais.
+
+\textbf{Définition :} Une partie $A$ d'un espace topologique est dite relativement compacte si son adhérence $\overline A$ est compacte (pour la topologie induite).
+
+\textbf{Définition :} On dit que $(\mathcal X, \mathcal T)$ est localement compact si tout point de $X$ admet un voisinage compact.
+
+\textbf{Théorème :} (...)
+
+\end{comment}
+
+\textbf{Théorme :} Soit $(E,d)$ un espace Polonais. Il existe une suite $(K_n)_{n\in \mathbf N}$ de compacts exhaustive, c'est-à-dire croissante pour l'inclusion et recouvrant $E$ : $ E = \bigcup\limits_{n \in \mathbf N} K_n$.
+
+Le théorème précédent est important. Grâce à lui, une mesure de Radon à valeurs entières revient à une partie localement finie, ce qui apporte un autre point de vue pour les processus ponctuels. Ainsi, les espaces polonais constituent un bon cadre pour l'étude des processus ponctuels.
+
+Pour rappel, dans $ \mathbf R^n $, la mesure de Lebesgue a pour vocation d'attribuer une notion de volume à toute partie (mesurable), en se basant sur l'intuition qu'un pavé doit avoir pour volume le produit des longueurs de ses côtés. Pour cela, il nous faut une notion de mesurabilité : de tribu. Celle-ci est choisie, dans $ \mathbf R^n$, comme étant la plus petite tribu contenant les dits pavés. De manière assez intéressante, on peut montrer que a tribu de Borel est engendrée par les \textit{ouverts} de $\mathbf R^n$. Cette propriété peut sembler au premier abord être une simple curiosité théorique ; mais elle s'avère en réalité être cruciale dès que l'on commence à généraliser les choses à des espaces plus abstraits. En particulier, cette propriété amène à la définition suivante, qui elle-même servira de base pour la définition (la mesurabilité) des processus ponctuels.
+
+\textbf{Définition :} Soit $(\mathcal X, \mathcal T)$ un espace topologique. Il est naturellement muni d'une \textbf{tribu} adaptée à sa topologie, à savoir, la tribu engendrée par $ \mathcal T $. On l'appelle la \textit{tribu borélienne}.
+
+
+\subsection{Processus ponctuels}
+
+Les définitions topologiques données précédemment permettent de définir sereinement les processus ponctuels. Les références pour cette section sont \cite{PPBeyond2023}, \cite{Meliot2021}, \cite{PPIntro2003}, \cite{Lenard1973}, \cite{Lenard1975}
+
+Soit $(E,d)$ un espace polonais.
+
+\textbf{Définition :} On appelle \textit{partie localement finie}, ou \textit{configuration}, une partie $A$ de $E$ telle que pour tout compact $K$ de $E$, $ A \cap K$ est fini.
+
+On note $ \xi_E $ l'ensemble des parties localement finies de $E$. 
+
+\textbf{Définition :} On définit une topologie sur $ \xi_E $ en prenant la plus petite rendant continues toutes les applications $ \xi \mapsto \sum_{x \in \xi} f(x) $, $f$ décrivant l'ensemble des fonctions continues à support compact $ f : E \to \mathbf \mathbf R $. Cette topologie est parfois appelée \textit{topologie vague}.
+
+\textbf{Proposition :} Pour cette topologie, une suite de configurations $(\xi_n)_{n \in \mathbf N}$ converge vers $\xi$ si et seulement si pour toute fonction $f : E \to \mathbf \mathbf R $ à support compact, $$ \sum_{x \in \xi_n} f(x) \xrightarrow[n\to\infty]{} \sum_{x \in \xi} f(x) $$
+
+\textbf{Remarque :} Intuitivement, $ \xi_n \xrightarrow[n\to\infty]{} \xi $ pour la topologie vague lorsque dans n'importe quelle \og fenêtre \fg \: compacte $K$, les points de $\xi_n \cap K$ convergent vers ceux de $\xi \cap K$.
+
+\textbf{Exemple :} La suite de configurations $(\xi_n)_{n\in\mathbf N} = (\{1/n,1\} \cup \{-kn, k \in [\![1,n]\!]\})_{n\in\mathbf N}$ converge vers la configuration $\{0,1\}$ dans $\mathbf R$.
+
+\textbf{Définition :} Un \textit{processus ponctuel} (localement fini) est une variable aléatoire $$ \xi : (\Omega, \mathcal A, \mathbb P) \to ( \xi_E, \mathcal B(\xi_E )) $$
+
+On dit que $\xi$ est un processus ponctuel \textit{fini} si le nombre de points total $|\xi|$ est fini presque sûrement : $ \mathbb P( |\xi| < \infty) = 1$ 
+
+Pour toute fonction positive ou telle que le terme à droite soit fini presque sûrement, on note $ \int f \mathrm d \xi $ la variable aléatoire $ \sum_{x \in \xi} f(x) $
+
+\textbf{Remarques :} 
+
+\begin{itemize} 
+    
+  \item Puisqu'il est muni d'une topologie, l'espace des configurations est naturellement muni d'une tribu borélienne $\mathcal B(\xi_E )$. Sans elle, la définition précédente n'est pas possible.
+
+  \item Par définition de cette topologie, la loi d'un processus ponctuel est caractérisée par les lois des variables $ \int f \mathrm d \xi $, pour $f$ dans l'ensemble des fonctions réelles continues à support compact.
+
+  \item Un processus ponctuel peut aussi bien être vu comme une variable aléatoire à valeurs dans un ensemble de mesures discrètes de la forme $ \displaystyle \sum_{i\in I} \delta_{x_i} $. Précisons :
+
+\end{itemize}
+
+\textbf{Définition :} Une mesure de Radon sur $E$ est une mesure qui est finie sur tout compact de $E$ : Pour tout compact $K$ de $E$, $ \mu(K) < +\infty $. On dit qu'elle est à valeurs entières si la mesure de toute partie mesurable est un entier. On note $ R(E) $ l'ensemble des mesures de Radon à valeurs entières sur $E$.
+
+\textbf{Proposition :} Puisque $E$ est polonais, en vertu d'un résultat cité précédemment, il existe une suite dénombrable de compacts recouvrant $E$. Il en découle que $$ R(E) = \left\{ \sum_{i \in I} \delta_{x_i} \mid I \subset \mathbf N, (x_i) \in E^I \right\} $$ 
+
+\textbf{Définition :} On munit $R(E)$ de la plus petite topologie rendant continues les applications $ B _in \mathcal B(E) \mapsto \mu(B) $, $\mu$ décrivant $R(E)$. Cette tribu est, à identification près, la même que celle définie sur $ \xi_E$.
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+  
+  \item À identification près, ce point de vue est le même que le précédent. À partir de maintenant, un processus ponctuel sera aussi bien à valeur dans $R(E)$ que dans $\xi_E$. 
+
+  \item En particulier, si $ \xi $ est un processus ponctuel, on notera que le \textit{nombre} (total) \textit{de points} associé à un tirage peut s'écrire $ | \xi | $ (si $\xi $ est vu comme un ensemble), ou encore $ \xi(E) $ (si $\xi$ est vu comme une mesure de Radon à valeurs entières).
+  
+  \item De plus, l'espace des configurations ne contient donc que des ensembles dénombrables de points.
+
+\end{itemize}
+
+\textbf{Exemples :} 
+
+\begin{itemize}
+
+  \item \textbf{Processus de Bernoulli :} On considère un ensemble fini $\{x_1,...,x_n\} \subset E$, et chaque point apparaît, ou non, de manière indépendante avec une (même) probabilité $p$. En prenant $ (X_1,...,X_n) \sim \mathcal B(p)^{\otimes n}$ des variables aléatoires de Bernoulli indépendantes de paramètre $p$, $$ \xi = \sum_{k=1}^n X_i \delta_{x_i} $$
+
+Ce processus s'appelle le processus (ponctuel) de Bernoulli. 
+
+  \item \textbf{Processus Binomial :} On considère un entier $n \geqslant 1$ et une mesure de probabilité $\mu$ sur $E$ (muni de sa tribu borélienne), et on tire $n$ variables aléatoires indépendantes de loi $\mu$. L'ensemble de ces variables forme un processus binomial.
+
+  Pour toute partie mesurable $A$, on a donc $$ \mathbb P(\xi(A) = k) = \binom{n}{k}\mu(A)^k (1-\mu(A))^{n-k} $$ ($ \xi(A) $ étant le nombre de points de $ \xi $ qui tombent dans $A$). Ce nombre (aléatoire) suit dont loi de binomiale de paramètres $ (n,\mu(A)) $.
+
+\end{itemize}
+
+L'exemple le plus important de processus ponctuel est le processus de Poisson.
+
+\textbf{Définition :} Soit $\mu$ une mesure finie sur $E$ (muni de sa tribu borélienne). Soit $N$ une variable aléatoire de Poisson de paramètre $ \mu(E) $, et soient $(X_n)_{n \in \mathbf N*}$ des variables aléatoires indépendantes de loi $ \mu/\mu(E)$, mutuellement indépendantes avec $N$. Alors $$ \xi = \sum_{k=1}^N \delta_{X_k} $$ est un processus ponctuel de Poisson de \textit{mesure de contrôle} $\mu$.
+
+\textbf{Remarques :}
+
+\begin{itemize}
+
+  \item Le nombre de points est une variable aléatoire $N$ de loi de Poisson de paramètre $\mu(E)$, en particulier de moyenne $\mu(E)$. Puisque les $(X_k)$ sont de loi $\mu/\mu(E)$, on voit que changer la valeur de $\mu(E)$ augmente simplement le nombre de points sans changer la loi de leur distribution. La quantité $\mu(E)$ représente donc une forme \textit{d'intensité} du processus.
+
+  \item Le processus de Poisson est parmi les processus ponctuels les plus riches mathématiquement.
+
+\end{itemize}
+
+\textbf{Proposition :} Pour toute fonction $f : E \to \mathbf R^+ $, on a 
+
+$$ \mathbb E\left[ \exp ( - \int f \mathrm d N) \right] = \exp \left( - \int (1-e^{f(s)}) \mathrm d \mu(s) \right) $$
+
+\textbf{Démonstration :} La preuve est un calcul qui, je trouve, illustre bien le fait que le processus \textit{de Poisson} est bien celui qui a les meilleurs propriétés :
+
+\begin{align*} \mathbb E\left[ \exp \left( - \sum_{k=1}^N f(X_i) \right) \right] &= \sum_{m=0}^\infty \mathbb E\left[ \exp \left( - \sum_{k=1}^n f(X_i) \right) \mathbf 1_{N = n} \right] \\ &= \sum_{n=0}^\infty e^{-\mu(E)} \frac{\mu(E)^m}{m!} \left( \frac{1}{\mu(E)} \int_E e^{-f(x)} \mathrm d \mu (x) \right)^m \\ &= \exp\left(-\mu(E) + \int_E e^{-f(x)} \mathrm d \mu(x) \right) \end{align*}
+
+(on a utilisé le fait que $N$ est indépendante des $X_k$, et la convention $ \sum_1^0 = 0 $)
+  
+\textbf{Remarque :} Cette propriété est très utile pour calculer la transformée de Laplace d'une processus ponctuel de Poisson, qui caractérise sa loi. Elle permet de démontrer le résultat suivant :
+
+\textbf{Theorème :} Soit $\xi$ un processus de Poisson de mesure de contrôle $\mu$ sur $E$. Alors :
+
+\begin{itemize}
+
+  \item Pour toute $A \subset E$ mesurable, $\xi(A)$ suit une loi de Poisson de paramètre $\mu(A)$.
+  
+  \item Pour toutes parties $A_1,...,A_n$ mesurables deux à deux disjointes de $E$, $\xi(A_1),...,\xi(A_n) $ sont indépendantes, et leurs lois sont de Poisson de paramètres respectifs $\mu(A_1),...,\mu(A_n)$.
+
+\end{itemize}
+
+\textbf{Démonstration :} Il suffit de calculer les transformées de Laplace de ces lois, en utilisant le résultat précédent pour des fonctions étagées : $f = s \mathbf 1_{A}$ pour le premier point, $f = \sum s_i \mathbf 1_{A_i}$. Le résultat se déduit de par injectivité.
+
+De la définition d'un processus de Poisson, on dérive le résultat suivant :
+
+\textbf{Théorème :} Pour $f \in L^1(E,\mu) $, on a 
+
+$$ \mathbb E \left[ \int f \mathrm d N \right] = \int f \mathrm d \mu $$
+
+Pour $f \in L^2(E,\mu) $, on a $$ \mathbb E \left[ \sum_{x \neq y \in N} f(x,y) \right] = \int f(x,y) \mathrm d \mu(x) \mathrm d\mu(y) = \int f(x,y) \mathrm d \mu^{\otimes 2} $$
+
+Plus généralement, pour $f \in L^n(E,\mu) $, on a 
+
+$$ \mathbb E \left[ \sum_{x_1 \neq ... \neq x_n \in N} f(x_1,...,x_n) \right] = \int f(x_1,...,x_n) \mathrm d \mu(x_1) ... \mathrm d\mu(x_n) = \int f(x_1,...,x_n) \mathrm d \mu^{\otimes n} $$
+
+\textbf{Théorème, et définition :} Soit $ \xi : (\Omega, \mathcal A, \mathbb P) \to R(E)$ un processus ponctuel. Alors on peut définir (il existe) des variables aléatoires $(X_k)_{k \in \mathrm N^*}$ sur $(\Omega, \mathcal A, \mathbb P)$ à valeur dans $ E \cup \{ \dagger\}$ \footnote{muni de la tribu $ \mathcal E \cup \{ A \cup \{ \dagger \}, A \in \mathcal E \} $, où $ \mathcal E $ est la tribu borélienne de $E$.}, telles que $$ \xi = \sum_{k=1}^{\xi(E)} \delta_{X_k} $$ et telles que $ X_k = \dagger $ si $ k > \xi(E) $.
+
+En clair, on peut récupérer les (des) variables aléatoires qui sont les points du processus ponctuel $\xi$. Le fait que de telles application existent est trivial : le fait qu'on peut en trouver qui soient bien \textit{mesurables} est toute la difficilté.
+
+\textbf{Définition :} Soit $ \xi \to R(E)$ un processus ponctuel. Pour $n \geqslant 1$, le $n$-ème moment factoriel de $\xi$, noté $M_n^\xi$, est le processus défini sur $E^n$ muni de sa tribu produit dont les points sont les $n$-uplets de $E^n$ constitués de points de $\xi$ : autrement dit,
+
+$$ M_n^\xi = \sum_{(i_1,...,i_n) \in [\![1,\xi(E)]\!]} \delta_{(X_{i_1},...,X_{i_n})}$$
+
+\textbf{Définition :} La $n$-ème mesure factorielle de $ \xi $ est la mesure définie par $$ \mu_n^\xi(B_1 \times ... \times B_n )= \mathbb E( M_n^\xi(B_1\times ... \times B_n)) $$ On admet que la relation précédente définit bien (se prolonge bien en une unique) mesure sur $E^n$ muni de sa tribu produit.
+
+\textbf{Exemple :} Si $\xi$ est un processus ponctuel de Poisson de mesure de contrôle $ \mu $, alors $ \mu_1^\xi = \mu $.
+
+\textbf{Définition :} Soit $ \lambda $ une mesure de référence sur $E$, et $ \xi $ un processus ponctuel. Si $ \mu^\xi_n $ admet une densité par rapport $ \lambda^{\otimes n} $, cette dernière est appelée $\textit{n-ème fonction de corrélation}$ de $\xi$, et est notée $\rho_n$.
+
+Autrement dit, on a, sous réserve d'existence $$ \rho_n(x_1,...,x_n) = \frac{\mathrm d (\mu^\xi_n)}{\mathrm d (\lambda^{\otimes n})} $$
+
+\textbf{Proposition :} Une fonction de corrélation est symétrique : pour toute permutation $ \sigma \in \mathfrak{S}_n$ sur $[\![1,n]\!]$, et tout $(x_1,...,x_n) \in E^n$, on a $$ \rho_n(x_1,...,x_n) = \rho_n(x_{\sigma(1)},...,x_{\sigma(n)}) $$
+
+\textbf{Proposition :} Pour toutes parties $A_1,...,A_n$ mesurables \textit{deux à deux disjointes} de $E$, on a $$ \boxed{ \mathbb E \left[ \prod_{k=1}^n \xi(A_k) \right] = \int_{A_1\times ... \times A_n} \rho_n(x_1,...,x_n) \mathrm d \lambda^{\otimes n} }$$
+
+Cette propriété caractérise les $ \rho_n $. 
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+  
+  \item Les fonctions de corrélation caractérisent la loi d'un processus ponctuel dès que les variables aléatoires $ \xi(B) $, pour $B$ mesurable, sont déterminées par leurs moments. Par exemple, c'est le cas pour les lois de Poisson.
+
+  \item Elles admettent une interprétation physique : prenons pour référence la mesure de Lebesgue, intuitivement, la quantité $$ \rho(x_1,...,x_n) \mathrm d \lambda (x_1) ... \mathrm d \lambda (x_n) $$ représente la probabilité de l'évènement \og Pour chaque $ k \in [\![1,n]\!] $, il y a un point au voisinnage $\mathrm d x_k$ de $ x_k $ \fg. Notons que l'évènement demande \textit{à ce qu'il y a ait} une particule au voisinnage de $x_k$ pour tout $k$ - sous-entendu, \textit{au moins une}, et il peut y en avoir ailleurs. Autrement dit cet évènement n'est pas à confondre avec l'évènement \og Pour chaque $ k \in [\![1,n]\!] $, il y a une (et une seule) une particule au voisinnage $\mathrm d x_k$ de $ x_k $ \fg, ni avec l'évènement \og Pour chaque $ k \in [\![1,n]\!] $, il y a une (et une seule) une particule au voisinnage $\mathrm d x_k$ de $ x_k $, et il n'y en a aucune nulle part ailleurs \fg. Ce dernier interviendra dans l'interprétation des densités de Janossy que nous définirons plus loin.
+
+  \item On a trouvé une famille d'objets (simples : des fonctions) qui permettent de décrire entièrement la loi d'un processus. De la même manière, par exemple, lorsque l'on travaille avec des variables aléatoires réelles, on aime ce genre de propriété : Pour une variable vectorielle à valeurs dans $ \mathbf R^n $ par exemple, si sa loi admet une densité par rapport à la mesure de Lebesgue, on est content : on peut décrire la loi entièrement à l'aide d'un objet simple (une fonction $f : \mathbf R^n \to \mathbf R $ mesurable, positive $\lambda^{\otimes n}$ presque partout, et d'intégrale $1$). De la même manière, les mesures de probabilité sur $ \mathbf R $ sont entièrement décrites par un objet simple : une fonction $ F : \mathbf R \to \mathbf R $, croissante, à valeurs dans $ [0,1] $, continue à droite, dont les limites en $ \pm \infty $ sont respectivement $ 1 $ et $ 0 $. Dans ces deux exemples, la propriété forte qui nous rend particulièrement heureux est que \textit{réciproquement}, étant donnée une fonction $ f : \mathbf R^n \to [0,1] $ mesurable, positive $\lambda^{\otimes n}$ presque partout et d'intégrale $1$, ou une fonction $F : \mathbf R \to \mathbf R $ croissante, continue à droite, et de limites $ 1 $ et $ 0 $ en $ \pm \infty$, ces objet définissent bien une loi de probabilité $ \mu $ (dans le second exemple, les fonctions de répartition dans $ \mathbf R$ décrivent même \textit{toutes} les mesures de probabilités possibles, mais c'est la propriété légèrement plus faible précédente qui m'intéresse). 
+
+Alors : réciproquement, toute famille de fonctions $ \rho_n $ définissent-elles une loi d'un processus ponctuel sur $E$ ? Certainement pas, nous avons vu qu'elles sont nécessairement symétriques, et elles doivent clairement vérifier une certaine condition de positivité. Peut-on trouver une condition nécessaire et suffisante ? Le théorème suivant répond à cette question.
+
+\end{itemize}
+
+\textbf{Théorème :} Soit $E$ un espace Polonais localement compact. Soit $ \xi $ un processus ponctuel sur $E$. 
+
+On suppose qu'il existe une mesure de Radon de référence $ \lambda $ sur $ E $, telle que les fonction de corrélation $ \rho_n(x_1,...,x_n) $ de $ \xi $ par rapport à $ \lambda^{\otimes n} $ existent.
+
+Alors les $ \rho_n(x_1,...,x_n) $ sont symétriques, positives $ \lambda^{\otimes n} $ presque partout, et vérifient la condition de positivité suivante : 
+
+Pour toutes fonctions $f_0,...,f_n $ définies sur $ E^n $ respectivement, à valeurs réelles, à support compact et telles que $$  f_0 + \sum_{k=1}^n \sum_{i_1 \neq ... \neq i_k} f(x_{i_1}, ..., x_{i_k}) \geqslant 0 $$
+
+On a $$ f_0 + \sum_{k=1}^n \int f_k(x_1,...,x_k) \rho_k(x_1,...,x_k) \mathrm d \lambda^{\otimes k}(x_1,...,x_k) \geqslant 0 $$
+
+Réciproquement, étant donné une famille de fonctions $ (\rho_n)_{n \in \mathbf N} $ qui satisfont aux conditions ci-dessus, on peut définir un processus ponctuel $ \xi $ sur $ E $ admettant ces fonctions de corrélation. 
+
+Ce processus ponctuel est unique en loi si et seulement si les variables aléatoires $ M(B) $, pour $ B $ partie mesurable de $E$ sont déterminées par leurs moments.
+
+\bigskip
+
+Un autre objet dans ce goût-ci existe et est souvent utilisé : il s'agit des densités de Janossy.
+
+\textbf{Définition :} Soit $ \lambda $ une mesure de référence sur $E$. On appelle \textit{densités de Janossy} (par rapport à $ \lambda $), et on note souvent $ (j_n)_{n \in \mathbf N} $, toute famille de fonctions, telle que pour toute fonction $ F $ mesurable de l'espace $R(E) $ des configurations dans $ \mathbf R $
+
+$$ \mathbb E(F(\xi)) = \mathbb P( |\xi| = 0) F(\emptyset) + \sum_{n=1}^\infty \frac{1}{n!} \int F(\{ x_1, ..., x_n \}) j_n(x_1,...,x_n) \mathrm d\lambda(x_1)... \mathrm d\lambda(x_n) $$
+
+Lorsque de telles densités existent, on dit parfois que $ \xi $ est alors un processus \textit{régulier}.
+
+\textbf{Proposition :} On a $$ \mathbb P(|\xi| = n ) = \frac{1}{n!} \int j_n(x_1,...,x_n) \mathrm d\lambda(x_1)... \mathrm d\lambda(x_n)$$
+
+\textbf{Exemple :} Soit $ \xi $ un processus ponctuel de Poisson de mesure de contrôle $ \mu $. Si on choisit $ \lambda = \mu $ pour mesure de référence, alors $ \xi $ admet par rapport $ \lambda $ les densités de Janossy (constantes) $$ j_n(x_1,...,x_n) = \exp(- \mu(E)) $$
+
+En particulier, on retrouve que $$ \mathbb P(|\xi| = k) = \frac{1}{k!} \int e^{-\mu(E)} \mathrm d \mu^{\otimes k} = \frac{e^{-\mu(E)}}{k!} \int \mathrm d \mu^{\otimes k} = \frac{e^{-\mu(E)}}{k!} \mu(E)^k = \frac{\mu(E)^k}{k!} e^{-\mu(E)}$$
+
+\textbf{Définition :} On appelle alors \textit{mesures de Janossy} les mesures définies par $$ J_n(A) = \int_A j_n(x_1,...,x_n) \mathrm d \lambda^{\otimes n} $$
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+
+  \item L'origine de la construction des densités de Janossy est le raisonnement suivant (qui, étrangement, n'est écrit nulle part dans la littérature - parce qu'il est trop évident, sans doute....): 
+  
+  Soit $ \xi $ un processus ponctuel (régulier). Soient $(X_n)_{n \in \mathbf N^*} $ des variables aléatoires telle que $ \xi = \{X_1,...,X_{\xi(E)}\} $ (on a vu précédemment que de telle variables aléatoires existaient). Par les propriétés connues de l'espérance conditionnelle \textit{sachant un évènement}, on peut écrire, pour toute $ F : R(E) \to \mathbf R $ telle que les espérances existent :
+  
+  $$ \mathbb E(F(\xi)) = \mathbb P( |\xi| = 0) F(\emptyset) + \sum_{n=1}^\infty \mathbb E(F(\xi) | |\xi| = n ) \mathbb P(|\xi| = n) $$
+
+  En notant $ \mathbb P^{(X_1,...,X_n) | \xi(E) = n} $ la loi conditionnelle de $ (X_1,...,X_n)$ sachant l'évènement $ \xi(E) = n $, et en notant $ p_n = \mathbb P( \xi(E) = n ) $, on a 
+
+  $$ \mathbb E(F(\xi)) = \mathbb P( |\xi| = 0) F(\emptyset) + \sum_{n=1}^\infty p_n \int F(x_1,...,x_n) \mathrm d \mathbb P^{(X_1,...,X_n) | \xi(E) = n}(x_1,...,x_n) $$
+
+  Si, pour chaque $n$, la loi $P^{(X_1,...,X_n) | \xi(E) = n}$ admet une densité $ \sigma_n $ par rapport à une mesure de référence $ \lambda^{\otimes n} $, ceci se réécrit 
+  
+  $$ \mathbb E(F(\xi)) = \mathbb P( |\xi| = 0) F(\emptyset) + p_n \int F(x_1,...,x_n) \sigma_n(x_1,...,x_n) \mathrm d \lambda^{\otimes n}$$
+
+  Les densités de Janossy sont alors les fonctions $$ j_n = p_n \sigma_n $$
+
+  \item Les densités de Janossy ont une interprétation : prenons pour mesure de référence la mesure de Lebesgue, la quantité $$ j_n(x_1,...,x_n) \mathrm dx_1 ... \mathrm d x_n $$ 
+  
+  représente la probabilité de l'évènement \og Pour chaque $ k \in [\![1,n]\!] $, il y a une (et une seule) une particule au voisinnage $\mathrm d x_k$ de $ x_k $, et il n'y en a aucune nulle part ailleurs \fg.
+
+  \item Au vu de l'interprétation précédente et de celle des fonction de corrélation, il semble y a voir un lien entre les deux. De facto, il se trouve que l'on peut exprimer l'une en fonction de l'autre, et réciproquement.
+
+\end{itemize}
+
+\textbf{Proposition :} Soit $\xi$ un processus ponctuel admettant des fonctions de corrélation $ \rho_n $ et des densités de Janossy $ j_n $ par rapport à une même mesure de référence $ \lambda $.
+
+Alors, ces dernières sont liées par les relation 
+
+$$ \rho_k(x_1,...,x_k) = \sum_{n=0}^\infty \frac{1}{n!} \int j_{k+n}(x_1,...,x_k,y_1,...,y_n) \mathrm d \lambda^{\otimes n}(y_1,...,y_n) $$
+
+et
+
+$$ j_n(x_1,...,x_n) = \sum_{k=0}^\infty \frac{(-1)^k}{k!} \int \rho_{n+k}(x_1,...,x_n,y_1,...,y_k) \mathrm d \lambda^{\otimes n}(y_1,...,y_k) $$
+
+
+
+
+\subsection{Préliminaires d'analyse fonctionnelle pour les déterminantaux}
+
+Les références pour cette partie sont \cite{ConwayOpTheory2000}, \cite{ConwayFunctAnalysis2019}, \cite{Gohberg2012}, \cite{HawthorneTraceClass2015}, \cite{Meliot2021}.
+
+Dans toute la suite, on fixe $H$ un espace de Hilbert séparable. Suivant \cite{ConwayFunctAnalysis2019}, on appelle \textit{base orthonormée} pour $H$, une famille orthonormée maximale pour l'inclusion (telle qu'il n'existe pas de famille orthonormée la contenant strictement). Si $H$ est séparable, on peut montrer que si $H$ est de dimension finie, toute \textit{base orthonormée} au sens de la définition précédente est une \textit{base} qui est \textit{orthonormée} (au sens des définitions usuelles), et si $H$ est de dimension infinie, toute \textit{base orthonormée} est une base hibertienne. Ainsi, dans la suite, \textit{base orthonormée} désigne soit une base qui est orthonormée, soit une base hilbertienne, selon si $H$ est de dimension finie ou non.
+
+\textbf{Rappel :} Soit $ T : H \to H $ une application linéaire. Il y a équivalence entre
+
+(i) $T$ est continue \quad (ii) $T$ est continue en 0 \quad (iii) $T$ est continue en n'importe quel $a \in H$
+
+(v) $T$ est \og lipschitz pour une seule variable\fg \: ou \og mono-lipschitz \fg \: : il existe $K > 0$ tel que $ \forall x \in H, \|T(x)\| \leqslant K \|x\| $ \qquad \qquad (iv) $T$ est lipschitz
+
+(vi) $T$ est bornée sur la sphère unité de $H$ \quad (vii) $T$ est bornée sur la boule unité de $H$
+
+Suivant \cite{ConwayFunctAnalysis2019} (et, de ce en fait, une sacrément grosse partie de la littérature en analyse fonctionnelle !), si $T$ vérifie l'une ou l'autre de ces conditions, on dit que $T$ est un \textit{opérateur borné}, et on note $ \mathcal B(H) $ l'algèbre (sous-algèbre de celle des endomorphismes de $H$) constituée des opérateurs bornés.
+
+Dans ce cas, la norme opérateur, ou norme subordonnée, de $T$ est \begin{align*} \|T\| &= \sup_{\|x\| = 1} \|T(x)\| = \sup_{\|x\| \leqslant 1} \|T(x)\| \\ &=  \inf \{K\in \mathbf R^+, T \: \text{est K-lipschitz} \} = \inf \{K\in \mathbf R^+, T \: \text{est K-mono-lipschitz} \} \end{align*}
+
+Elle fournit une norme d'algèbre (c'est-à-dire sous-multiplicative) sur $ \mathcal B(H)$ : on a $$ \forall A, B \in \mathcal B(H), \|AB\| \leqslant \|A\| \|B\| $$
+
+% On rappelle que si $(\Omega, \mathcal A, \mu)$ est un espace mesuré, l'espace $ \displaystyle H =  L^2(\Omega, \mathcal A, \mu) = \{ f : \Omega \to \mathbf C, \int |f|^2 \mathrm d \mu < +\infty \} $, noté simplement $ L^2 $ s'il n'y a pas d'ambiguité, des fonctions complexes mesurables de carré intégrable est un Hilbert pour la norme découlant de la forme sesquilinéaire $ (f,g) \mapsto \langle f,g \rangle = \int f \overline g \mathrm d \mu $. 
+
+\textbf{Théorème et définition :} Soit $(\Omega, \mathcal A, \mu)$ un espace mesuré. On note $ L^2 = L^2(\Omega, \mathcal A, \mu)$. Soit $ k \in L^2(\Omega^2, \mathcal A^{\otimes 2}, \mu^{\otimes 2})$. Alors l'opérateur $ K : L^2 \to L^2 $ défini par $$ Kf : x \mapsto \int k(x,y)f(y) \mathrm d \mu (y) $$ est un opérateur borné. 
+
+Le fait que $ k \in L^2(\Omega^2, \mathcal A^{\otimes 2}, \mu^{\otimes 2})$ implique que $K$ est (bien défini et) bien à valeurs dans $L^2$.
+
+De plus, s'il existe $ M_1, M_2 \geqslant 0 $ tels que $ \displaystyle \int |k(x,y)| \mathrm d \mu(y) \leqslant M_1 $ pour $\mu$-presque-tout $x$ et $ \displaystyle \int |k(x,y)| \mathrm d \mu(x) \leqslant M_2 $ pour $\mu$-presque-tout $y$, alors $\|K\| \leqslant \sqrt{M_1M_2}$.
+
+Réciproquement, un opérateur $ K : L^2 \to L^2 $ pouvant s'écrire sous cette forme (avec $ k \in L^2(\Omega^2, \mathcal A^{\otimes 2}, \mu^{\otimes 2})$) s'appelle un \textit{opérateur intégral}. 
+
+$k$ est alors unique ($ \mu^{\otimes 2} $ presque-partout) et s'appelle le \textit{noyau} de $K$. 
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+
+  \item La proposition précédente sera appliquée dans le cas $ (\Omega, \mathcal A, \mu) $ est un espace polonais mesuré pour définir les déterminantaux.
+
+  \item Dans son cours à Télécom Paris, F. Roueff \cite{Roueff2024} définit aussi une notion de noyau, mais de manière différente. Pour lui, si $(X,\mathcal X)$, $(Y,\mathcal Y)$ sont deux espace mesurables, un \textit{noyau} désigne toute application $ N : X \times \mathcal Y \to [0,\infty] $ qui est mesurable à gauche et une mesure à droite : pour tout $A \in \mathcal Y$, $N (\cdot , A)$ est une mesure, et pour tout $x \in X$, $ N(x,\cdot) $ est une mesure. On pourrait penser au premier abord que ces notions sont décorrélées, mais il y a bien un lien. Si $N$ est un noyau (au sens de Roueff), on dit qu'il admet une densité par rapport à la mesure $\mu$ sur $(Y,\mathcal Y)$ s'il existe une fonction mesurable $n : X \times Y \to [0,+\infty] $ telle que $ \displaystyle N(x,A) = \int_A n(x,y) \mathrm d \mu(y) $. Cette \textit{densité} $n$ est alors ce que Conway (et tous les autres !) appellent \og noyau \fg. Bref, ce que certains appellent \og noyau \fg \, revient à ce que d'autres appellent la densité d'un noyau par rapport à une mesure.
+
+\end{itemize}
+
+\textbf{Théorème et définition :} Soit $A \in \mathcal B(H) $ un opérateur borné. Alors il existe un unique opérateur $ B \in  \mathcal B(H) $ tel que $ \forall x,y \in H, \langle Ax, y \rangle = \langle x, B y \rangle $. De plus, $ \| B \| = \| A \|$ dans $ \mathcal B(H) $. Cet unique opérateur est noté $ A^* $ et est appelé l'adjoint de $B$.
+
+\textbf{Exemple :} Soit $K$ un opérateur intégral de noyau $k$. Alors $K^*$ est l'opérateur intégral de noyau $ k^* : (x,y) \mapsto \overline{k(y,x)} $.
+
+\textbf{Exemple :} On note $ l^2(\mathbf N) $ l'espace des suites de carré sommable. Alors l'opérateur de shift $ S : (\alpha_n)_{n \in \mathbf N} \mapsto (\mathbf 1_{\mathbf N^*} \alpha_{n-1})_{n \in \mathbf N^*} $ est borné et son adjoint est $ S^* : (\alpha_n)_{n \in \mathbf N} \mapsto (\alpha_{n+1})_{n \in \mathbf N^*} $
+
+\textbf{Proposition :} On a : 
+% Page
+
+\medskip
+
+\begin{itemize}
+
+  \item $\forall A,B \in \mathcal B(H), \forall \alpha, \beta \in \mathbf C, (\alpha A + \beta B)^* = \overline \alpha A^* + \overline \beta B $
+
+  \item $ \forall A \in \mathcal B(H), (A^*)^* = A $
+
+  \item $ (AB)^* = B^* A^* $
+
+  \item Si $A \in \mathcal B(H) $ est inversible, alors $ (A^{-1})^* = (A^*)^{-1} $
+
+  \item $ \|A\| = \|A^*\| = \|A^*A\|^{1/2} $
+
+\end{itemize}
+
+\medskip
+
+\textbf{Définition :} On dit que $A$ est autoadjoint, ou hermitien, si $ A^* = A $. On dit que $A$ est normal si $AA^* = A^*A$. On dit que $A$ est unitaire si $AA^* = A^*A = I$.
+
+Tout opérateur autoadjoint est donc normal, tout opérateur unitaire est donc bijectif d'inverse son adjoint, et est aussi normal. 
+
+
+
+% Propriétés supplémentaires autour des adjoints : pages 49-51.
+
+% Définitions générales des idempotents et des opérateurs de projection.
+
+
+
+\textbf{Définition :} On dit que $ T \in \mathcal B(H) $ est compact si l'image par $T$ de la boule fermée unité est relativement compacte, ou encore si $T$ envoie toute partie bornée de $H$ sur une partie relativement compacte de $H$.
+
+La diagonalisabilité est importante en vue des déterminantaux.
+
+\textbf{Théorème :} Soit $T \in \mathcal B(H) $ un opérateur compact. On rappelle que le spectre de $T$ est $ \sigma(T) = \{ \lambda \in \mathbf C, T - \lambda I \: \text{n'est pas inversible} \}$. Alors une, et une seule des condition suivantes est vérifiée :
+
+%p. 229
+
+(i) $ \sigma(T) = \{ 0 \} $
+
+(ii) $ \sigma(T) = \{ 0, \lambda_1, ..., \lambda _n \} $ où, pour chaque $ k \in [\![1,n]\!] $, $ \lambda_k \neq 0$ et $ \mathrm{dim} \:  \mathrm{Ker}(T - \lambda_k I) < \infty $
+
+(ii) $ \sigma(T) = \{ 0 \} \cup \{ \lambda_n, n \in \mathbf N^* \} $ où, pour chaque $ k \geqslant 1 $, $ \lambda_k \neq 0$ et $ \mathrm{dim} \: \mathrm{Ker}(T - \lambda_k I) < \infty $, et on a : $$\lambda_k \xrightarrow[k \to \infty]{} 0 $$
+
+\textbf{Remarque :} $0$ est (donc) le seul point d'accumulation possible pour un opérateur borné. Les autres valeurs propres sont toutes des points isolés !
+
+\textbf{Théorème :} Soit $T : H \to H$ un opérateur compact auto-adjoint. Son spectre est au plus dénombrable, on peut noter $ (\lambda_n)_{n \in I} $ ses valeurs propres deux à deux distinctes non nulles (où $ I = \mathbf N^* $ s'il y en a une infinité, et $ I = [\![1,n]\!] $ s'il y en a $ n \in \mathbf N $ - si $n = 0$, $T$ est nul). 
+% p. 62-63
+Alors les $ \lambda_n $ sont tous réels, les sous-espaces propres $ \mathrm{Ker(T - \lambda_k I)} $ sont deux à deux orthogonaux, et $$ T = \sum_{n \in I}^\infty \lambda_n P_n $$  où $ P_n $ désigne la projection sur $ \mathrm{Ker}(T-\lambda_n I) $. La série précédente converge au sens de la norme $ \| \cdot \|$.
+
+Autrement dit, il existe une base $(e_k)_{k \in I}$ orthonormée de $ \mathrm{Ker}(T)^\perp $,  formée de vecteurs propres de $T$, et telle qu'on a $$ \forall x \in H, T(x) = \sum_{k \in I }^\infty \lambda_k \langle x, e_k \rangle e_k $$
+
+
+
+En lien avec la diagonalisation, le théorème de Mercer joue un rôle très important pour les déterminantaux.
+
+\textbf{Théorème :} (Mercer)
+
+Soit $(\Omega, \mathcal A, \mu) $ un espace mesuré $ \sigma$-fini.
+
+Soit $ k \in L^2(\Omega^2, \mu^{\otimes 2}) $. On suppose que $k$ est de type positif (ce qui signifie que $ \sum\limits_{i,j} \lambda_i \overline{\lambda_j} k(x_i,x_j) \geqslant 0 $ pour tous $ \lambda_i, \lambda_j, x_i, x_j $) et que l'opérateur intégral $K$ associé à $k$ est auto-adjoint
+
+Alors les valeurs propres de l'opérateur intégral $K$ associé à $k$ sont positives, et il existe une base (hilbertienne) $(e_n)_{n\in\mathbf N}$ de $L^2(\Omega, \mu)$ formée de vecteurs propres pour $K$. 
+
+Les vecteurs propres associés aux valeurs propres non nulles sont continus, et on a $$\boxed{ k(x,y) = \sum_{n \in \mathbf N} \lambda_n e_n(x) \overline{e_n(y)} } $$
+
+\textbf{Proposition :} Sous les hypothèses précédentes si $K$ est à trace, on a :
+
+Les fonction propres étant normées, on voit que l'on a $$ \mathrm{Tr}(K) = \int k(x,x) \mathrm d \lambda (x) $$
+
+
+\textbf{Définition :} On dit que $A \in \mathcal B(H) $ est \textit{positif} s'il est hermitien et si son spectre est inclus dans $ \mathbf R^+ $. On note $ a \geqslant 0 $
+
+% (le spectre d'un opérateur hermitien est toujours réel, indépendament du caractère compact ou non de $A$) : pourquoi j'ai écrit ça ? Pourquoi compact ?
+
+\textbf{Proposition :} Soit $A \in \mathcal B(H) $. Pour tout $ n \geqslant 1 $, il existe un unique $ B \in \mathcal B(H) $ tel que $ B^n = A $.
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+
+  \item La racine carrée d'un élément $a$ est alors bien définie, et est notée $ a^{1/2} $.
+  
+  \item Le résultat précédent est la conséquence d'un résultat très général de la théorie des $C^*$-algèbres. Si $ \mathcal A$ est une algèbre de Banach sur $\mathbf C$, c'est une $C^*$-algèbre dès lors qu'on la munit d'une application $ a \mapsto a^* $ involutive, antilinéaire, inversant les produits et conservant la norme : c'est-à-dire satisfaisant aux relations $ (a^*)^* = a$, $ (ab)^* = b^* a^* $,  $(\alpha a + \beta b)^* = \overline \alpha a + \overline \beta b $ et $ \| a^* a \| = \|a \|^2 $. Par exemple, $\mathcal B(H)$ muni de d'opération d'adjonction est une $ C^* $-algèbre. La sous-algèbre des opérateurs compacts est aussi une (sous-)$C^*$-algèbre. D'autres exemples incluent l'espace des fonctions continues à valeurs complexes sur un espace topologique compact, muni de la conjugaison, ou encore les espaces $ L^\infty(\Omega, \mathcal A, \mu) $ où $\mu$ est $\sigma$-finie muni de la même conjugaison. Dans une $C^*$-algèbre, on montre alors diverses propriétés, telles que : $ \|a \| = \|a^*\| $, ou encore $ \|a\| = \mathrm{sup} \{ ||ab||, b \in \mathcal A, \|b\| \leqslant 1\} = \mathrm{sup} \{ ||ba||, b \in \mathcal A, \|b\| \leqslant 1\} $. On définit les éléments hermitiens, normaux, inversibles et positifs de la même manière, et on a équivalence entre $ a \geqslant 0$, $ a = b^2 $ où $b$ est hermitien, et $a = x^*x $ pour un certain $x$. On peut montrer que toute $C^*$ algèbre peut se plonger dans une $C^*$ algèbre plus grande \textit{admettant une unité} ; le spectre de $ a \in \mathcal A $ est alors $ \sigma(a) = \{ \lambda \in \mathbf C, a - \lambda I \: \text{n'est pas inversible}\}$ ; tout élément hermitien a alors un spectre réel. On peut alors montrer la proposition précédente dans ce cadre. Tout ceci n'est pas strictement utile en vue de nos applications, mais est bien intéressant !
+
+\end{itemize}
+
+
+
+
+Les opérateurs de Hilbert-Schmidt sont également souvent mentionnés dans les articles sur les déterminantaux.
+
+\textbf{Proposition et définition :} Si $(e_i)$ et $(f_j)$ sont deux bases orthonormées de $H$ et si $A \in \mathcal B(H) $, alors $$ \sum_i \|A e_i\|^2 = \sum_j \|A f_j\| = \sum_i \sum_j |\langle Ae_i, f_j \rangle|^2 $$
+
+En particulier cette quantité ne dépend pas du choix de la base orthonormée $ (e_i) $ de $H$. On définit alors $$ \|A\|_2 = \left[ \sum_i \|A e_i\|^2 \right]^{1/2}$$ 
+
+On dit que $A$ est un \textit{opérateur de Hilbert-Schmidt} si $ \|A\|_2 < \infty $. 
+
+\textbf{Proposition :} L'ensemble des opérateurs de Hilbert-Schmidt est un idéal de $\mathcal B(H)$. Soit $A$ un opérateur de Hilbert-Schmidt et $T$ un opérateur borné.
+
+\begin{itemize} 
+
+    \item $\| A\| \leqslant \|A\|_2 $
+
+    \item $ \|TA\|_2 \leqslant \|T \| \, \|A\|_2 $
+
+    \item $T$ est Hilbert-Schmidt si et seulement si $(T^* T)^{1/2} $ l'est, et on a alors $ \| T\|_2 = \| (T^* T)^{1/2}\| $ 
+
+    \item Si $T$ est compact, en notant $(\lambda_n)_{n\in \mathbf N} $ les valeurs propres de $ (T^* T)^{1/2} $ répétées avec multiplicité, $T$ est Hilbert-Schmidt si et seulement si $ \displaystyle \sum_{n \in \mathbf N}^\infty \lambda_n^2 < \infty $. Dans ce cas, $ \displaystyle \|T \|_2 = \left( \sum_{n \in \mathbf N} \lambda^2_n \right)^{1/2}  $.
+
+    \item Soit $(\Omega, \mathcal A, \mu)$ un espace mesuré, et soit $ k \in L^2(\Omega^2, \mathcal A^{\otimes 2}, \mu^{\otimes 2 })$. Soit $K$ l'opérateur intégral de noyau $k$. Alors $K$ est Hilbert-Schmidt, et $ ||K||_2 = ||k||_2 $.
+
+\end{itemize}
+
+Il reste enfin à définir les opérateurs à trace, qui sont également omniprésents dans les articles parlants de déterminantaux.
+
+\textbf{Proposition et définition :} Soit $A \in \mathcal B(H)$. Les assertions suivantes sont équivalentes :
+
+(i) $A$ s'écrit $BC$, où $B$ et $C$ sont deux opérateurs Hilbert-Schmidt 
+
+(ii) $(A^*A)^{1/2}$ s'écrit $BC$, où $B$ et $C$ sont deux opérateurs Hilbert-Schmidt 
+
+(iii) $((A^*A)^{1/2})^{1/2}$ s'écrit $BC$, où $B$ et $C$ sont deux opérateurs Hilbert-Schmidt 
+
+(iv) Il existe une base orthonormée $(e_n)_{n\in\mathbf N}$ de $H$ telle que $ \displaystyle \sum_{n \in \mathbf N}\langle (A^* A)^{1/2}e_n, e_n \rangle < \infty $
+
+Dans ce cas, on a $ \displaystyle \sum_{n \in \mathbf N} |\langle A e_n, e_n \rangle | < \infty $ pour toute base orthonormée $(e_n)_{n\in\mathbf N}$ de $H$.
+
+De plus, la valeur de $ \displaystyle \sum_{n \in \mathbf N}\langle A e_n, e_n \rangle  $ est indépendante du choix de la base orthonormée $(e_n)_{n\in\mathbf N} $ de $H$. 
+
+On l'appelle \textit{trace} de $A$, on la note $ \mathrm{Tr}(A) $, et on dit que $A$ est un \textit{opérateur à trace}, ou opérateur \textit{trace-class}.
+
+\textbf{Proposition :} La trace vérifie les propriétés suivantes, où $A$ est à trace et $T$ est borné :
+
+\begin{itemize}
+
+  \item L'ensemble des opérateurs à trace est une sous-algèbre de $\mathcal B(H)$, c'en est aussi un idéal.
+
+  \item $AT$ et $TA$ sont donc à trace, et $\mathrm{Tr}(AT) = \mathrm{Tr}(TA)$
+
+  \item Si $A \geqslant 0$, $ \mathrm{Tr}(A) \geqslant 0$, et si de plus $ \mathrm{Tr}(A) = 0$, alors $A = 0$
+
+  \item L'application $A \mapsto \|A\|_1 = \mathrm{Tr}((A^* A)^{1/2}) $ définit une norme sur l'espace des opérateurs à trace, qui en fait un espace de Banach.
+
+  \item On a :
+  
+  \begin{itemize}
+    
+    \item $ |\mathrm{Tr}(TA)| \leqslant \|T\| \, \|A\|_1$ 
+    
+    \item $ \| A \|_1 =  \|A^* \|_1$
+
+    \item $\| TA \| \leqslant  \|T\| \, \| A \|_1 $
+
+  \end{itemize}
+
+  \item Si $T$ est compact, en notant $(\lambda_n)_{n\in \mathbf N} $ les valeurs propres de $ (T^* T)^{1/2} $ répétées avec multiplicité, $T$ est à trace si et seulement si $ \displaystyle \sum_{n=1}^\infty \lambda_n < \infty $. Dans ce cas, $ \displaystyle \|T \|_1 = \left( \sum_{n \in \mathbf N} \lambda_n \right) $.
+
+  \item L'application $(A,B) \mapsto \mathrm{Tr}(AB^*) $ définie une produit scalaire complexe sur l'espace des opérateurs Hilbert-Schmidt, et la norme induite en fait un espace de Hilbert.
+  
+\end{itemize}
+
+Parlons enfin de projections.
+
+\textbf{Définition :} Soit $E$ un espace Polonais, muni de sa tribu borélienne et d'une mesure de référence $m$. 
+
+Soit $ H = L^2(E,m) $. Soit $\Lambda $ un sous-ensemble de $E$ que l'on supposera compact. On note $ I_\Lambda : L^2(\Lambda, m) \to L^2(E, m)$ l'opérateur de prolongement canonique (qui prolonge une fonction de $ L^2(\Lambda, m) $ en une fonction de $ L^2(E, m) $ en attribuant $0$ aux points de $ {}^c \Lambda $).
+
+$ I_\Lambda $ étant injectif, on peut voir $ L^2(\Lambda, m) $ comme un sous-espace de $ L^2(E,m) $. On note $ P_\Lambda : L^2(E, m) \to L^2(\Lambda, m) $ le projecteur orthogonal sur ce sous-espace.
+
+Soit $K : L^2(E,m) \to L^2(E,m)$ un opérateur borné. La \textit{restriction}, ou \textit{projection} de $K$ à $ \Lambda $ est l'opérateur $$ K_\Lambda = P_\Lambda K I_\Lambda  : L^2(\Lambda, m) \to L^2(\Lambda, m)$$
+
+\textbf{Remarque :} Cette définition sera utile plus loin, car nous considérerons des restrictions de DPPs sur des compacts. Parfois (souvent, en fait), dans la littérature, on voit plutôt écrit : $ K_\Lambda = P_\Lambda K P_\Lambda $. Cette écriture signifie que : (i) d'une part, on a déjà identifié $ L^2(\Lambda, m) $ comme un sous-espace de $ L^2(E, m )$, et (ii) d'autre part, puisque l'on écrit $ P_\Lambda $ tout à droite, on autorise $ K_\Lambda $ prendre comme argument n'importe quelle fonction de $ L^2(E, m) $ (que l'on projette alors orthogonalement sur $ L^2(\Lambda, m) $)(sinon, prendre $ P_\Lambda $ tout à droite reviendrait à ne rien faire du tout puisque $ P_\Lambda $ agit comme l'identité sur $ L^2(\Lambda, m) $) ; vu sous cet angle $ K_\Lambda$ peut être vu comme un opérateur de $ L^2(\Lambda, m) $ dans $ L^2(\Lambda, m) $.
+
+\textbf{Proposition :} Si $K$ admet un noyau $k$, $ K_\Lambda $ s'écrit $$ K_\Lambda : f \mapsto \left[ x \in \Lambda \mapsto \int_\Lambda k(x,y) f(y) \mathrm d m(y)) \right] $$
+
+\textbf{Définition :} $K : L^2(E,m) \to L^2(E,m)$ est \textit{localement à trace} si pour tout compact $\Lambda$ de $E$, la restriction $ K_\Lambda $ de $K$ à $ \Lambda $ est à trace.
+
+\textbf{Proposition :} Soit $K$ un opérateur intégral, que l'on supposera auto-adjoint.
+
+Alors $ K $ est localement à trace si et seulement si, pour tout compact $ \Lambda $ de $ E $, les valeurs propres $ (\lambda^{\Lambda}_n)_{n \in \mathbf N} $ de la restriction $ K_\Lambda $ de $K $ à $ \Lambda $ vérifient $ \sum_{n \in \mathbf N} \lambda_n < +\infty$
+
+La proposition suivante sera importante pour la définition des déterminantaux.
+
+\textbf{Proposition :} Soit $K$ un opérateur hermitien localement à trace. Alors le spectre de $K$ est inclus dans $[0,1]$ si et seulement si pour tout compact $ \Lambda $, le spectre de $ K^\Lambda $ est inclus dans $[0,1]$.
+
+\textbf{Remarque :} La littérature autour des opérateurs localement à trace est très faible.
+
+\textbf{Définition :} On dit que $A \in \mathcal B(H) $ est de rang fini si $ \mathrm{Im}(A) = A(H) $ est de dimension finie.
+
+\textbf{Proposition : } On a les inclusions suivantes entre sous-ensembles de $ \mathcal B(H)$ : 
+
+$$ \{ \text{rang fini} \} \subset \{ \text{à trace} \} \subset \{ \text{Hilbert-Schmidt} \} \subset \{ \text{compact} \} \subset \{ \text{borné} \} $$
+
+Enfin, le déterminant de Fredholm apparaît régulièrement dans la littérature autour des déterminantaux. 
+
+La proposition suivante a été donnée comme exercice d'oral pour le Concours Mines Ponts (\cite{RMS20221}, \cite{RMS20223})
+
+\textbf{Proposition :} Soit $A$ une matrice carrée à coefficients réels, symétrique. Alors il existe $ \alpha > 0 $ tel que 
+
+$$ \forall x \in ]-\alpha, \alpha[, \mathrm{det}(I_n + x A) = \exp\left( \sum_{k=1}^\infty \frac{(-1)^{k-1}}{k} \mathrm{Tr}(A^k) x^k\right) $$
+
+Je pense qu'elle reste vraie en remplaçant $A$ par une matrice carrée ou un endomorphisme quelconque d'un espace de dimension finie, mais je n'ai pas trouvé de références pour ce point. Toujours est-il que cette proposition motive la définition suivante :
+
+\textbf{Définition :} Soit $T$ un opérateur à trace. Le déterminant de Fredholm de $ I + T $ est $$ \mathrm{det}(I + T) = \exp \left( \sum_{n=1}^\infty \frac{(-1)^{n-1}}{n} \mathrm{Tr}(T^k) \right) $$
+
+Pour rappel (ou information), les propriétés des opérateurs à trace données précédemment impliquent que si $T$ est à trace, alors pour tout $ k\geqslant 1$, $ T^k$ est à trace.
+
+\textbf{Proposition :} Soit $T$ un opérateur intégral à trace sur $ L^2(E, m) $. On a 
+
+$$ \mathrm{det}(I - T) =  \sum_{n=0}^\infty \frac{1}{n!} \int \mathrm{det}(T(x_i,x_j))_{1\leqslant i,j \leqslant n} \mathrm d m(x_1) ... \mathrm d m(x_n) $$
+
+
+
+
+
+
+
+
+
+\subsection{Processus ponctuels déterminantaux}
+
+Les processus ponctuels déterminantaux ont été introduits dans la seconde moitié du XXe \cite{Macchi1975}, pour étudier les fermions en mécanique quantique. Ils apparaissent dans d'autres contextes, comme les arbres couvrants aléatoires, les valeurs propres de matrices aléatoires, et les chemins auto-évitants, ou encore les partitions d'entiers aléatoires \cite{Burton1993}, \cite{Tao2024}, \cite{Meliot2021}. Certains tentent aussi de les utiliser en machine learning \cite{DeterminantalML2013}. Plus récemment, dans \cite{Miyoshi2014}, \cite{TorrisiLeonardi2014}, \cite{Vergne2014} les auteurs ont utilisé les processus ponctuels déterminantaux pour modéliser des phénomènes arrivant en télécommunications.
+
+Citons une autre apparition que je trouve particulièrement élégante :
+
+\textbf{Définition :} On dit qu'une variable aléatoire $X$ est gaussienne complexe (centrée réduite) si elle sa loi est la probabilité de densité $f(z) = \frac 1 \pi e^{-|z|^2}$ sur $\mathbf C$.
+
+\textbf{Définition :} Une fonction analytique gaussienne est une fonction aléatoire $ f : z \mapsto \sum_{n=0}^{+\infty} a_n z^n $ définie sur le plan complexe dont les coefficients $a_n$ sont des gaussiennes complexes centrées réduites.
+
+Ces fonctions sont analytiques presque sûrement, et vérifient donc (p.s.) le principe des zéros isolés, qui affirme que les zéros $z$ d'une fonction analytique sont isolés, excepté dans le cas dégénéré où la fonction est nulle, ou localement nulle sur un disque $D(z,r)$.
+
+\textbf{Théorème :} Alors, \cite{Hough2009ZerosGAF}, \cite{ZerosGaussianPowerSeries} démontrent, entre autres, que l'ensemble des zéros dans le disque unité de fonctions analytiques gaussiennes forment un processus ponctuel déterminantal ; et, qui plus est, un dont le noyau n'est autre que celui de Bergman $ \displaystyle K(z,w) = \frac 1 \pi \frac{1}{(1- z\overline w)^2} $ sur lequel nous reviendrons plus loin.
+
+Les références pour cette partie sont \cite{Hough2006}, \cite{Macchi1975}, \cite{Soshnikov2000}, \cite{Meliot2021}.
+
+On fixe dans la suite un espace Polonais $E$ muni d'une mesure de référence $ \lambda $. On pourra prendre $ E = \mathbf C $ et $ \lambda $ la mesure de Lebesgue sur $ \mathbf C $.
+
+La définition de ces processus passe par le fait que leur fonctions de corrélations s'exprime comme le déterminant d'une matrice dont les entrées sont données par un noyau :
+
+\textbf{Définition :} Soit $ \xi $ un processus ponctuel sur $E$. On dit que c'est un processus ponctuel déterminantal s'il existe un noyau $ k : E^2 \to E $ tel que les fonctions de corrélation de $ \xi $ par rapport à $ \lambda $ existent et s'écrivent 
+
+$$ \rho_n(x_1,...,x_n) = \mathrm{det}(k(x_i,x_j))_{1 \leqslant i,j \leqslant n} $$
+
+Donnons tout de suite le théorème fondamental. 
+
+\textbf{Théorème fondamental :} \cite{Macchi1975}, \cite{Soshnikov2000}
+
+Soit $k \in L^2(E^2, \lambda^{\otimes 2}) $ un noyau de type positif définissant un opérateur intégral auto-adjoint localement à trace $K$ sur $ L^2(E, \lambda) $. 
+
+Alors il existe un processus déterminantal $ \xi $ sur $E$ de noyau $k$ si, et seulement si, les valeurs propres de $K$ sont toutes dans $[0,1]$.
+
+De plus, d'après le théorème de Mercer, on peut alors écrire $$ k(x,y) = \sum_{i \in I} \lambda_i \phi_i (x) \overline{\phi_i(y)} $$ 
+
+où $I = [\![ 1,n]\!]$ ou $ \mathbf N $, où les $ (\lambda_i)_{i \in I} $ sont (donc) les valeurs propres de $K$ et sont (donc) dans $[0,1]$.
+
+Soient $ (B_i)_{i \in I} $ des variables aléatoires de Bernoulli indépendantes de paramètres respectifs $ \lambda_i $.
+
+Soit $ k_B $ le noyau aléatoire défini par $$ k_B(x,y) = \sum_{j \in I} B_j \phi_j(x) \overline{\phi_j(y)} $$
+
+Alors, le processus ponctuel $ \xi_B $ obtenu en tirant les variables aléatoires $ B_i $ \textit{puis}, conditionnellement aux $B_i$, des points dans $E$ selon le processus déterminantal de noyau $ k_B $, a la même loi que $ \xi $ :
+
+$$ \xi \overset{\text{Loi}}{=} \xi_B $$
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+  
+  \item Cette propriété est absolument fondamentale et constitue la raison pour laquelle on s'intéresse aux déterminantaux.
+
+  \item Formellement, on peut (il faut) définir les variables de Bernoulli sur un autre espace probabilisé $ (\tilde{\Omega}, \tilde{\mathcal A}) $, puis considérer le processus $ \xi_B $ sur l'espace produit $ \Omega \times,  \tilde \Omega $, mais peu importe.
+
+  \item Les processus déterminantaux ont cette propriété particuière que lorsque l'on les observe, leurs points ont une très forte tendance à se repousser les uns les autres.
+
+  Voyez vous-mêmes :
+
+\end{itemize}
+
+\begin{center}
+\includesvg{Points}
+\end{center}
+
+La figure représente trois processus ponctuels invariants par translation : À gauche, un processus ponctuel de Poisson, au centre, un processus ponctuel déterminantal, et à droite, un processus ponctuel permanental. Les ponctuels permanentaux seront définis à la fin de cette partie. Essentiellement, il s'agit de faire à peu près la même chose en remplaçant le déterminant par un permanent.
+
+\textbf{Proposition :} D'après le théorème fondamental, étant donné un noyau $k$ vérifiant les hypothèses du théorème, en notant $ (\lambda_i)_{i\in I} $ les valeurs propres de l'opérateur intégral (auto-adjoint, localement à trace) associé, la loi du nombre total de points pour un processus déterminantal de noyau $k$ est la loi d'une somme de variables aléatoires de Bernoulli de paramètres $ \lambda_i $ : $$ \xi(E) = |\xi| \sim \sum_{i \in I} \mathcal B(\lambda_i ) $$
+
+\textbf{Théorème :} Soit $\xi$ un processus ponctuel déterminantal de noyau $k$ de type positif, on note $ (\lambda_j)_{j \in J} $ ($J = [\![1,n]\!]$ ou $\mathbf N$) les valeurs propres de l'opérateur intégral auto-adjoint $K$ associé, que l'on supposera à trace. Soit $ \phi_n$ une base (hilbertienne) de $ L^2(E, \lambda)$ formée de vecteurs propres pour $K$. 
+
+Soient $(B_i)_{i \in I} $ une famille de variables aléatoires de Bernoulli $ \mathcal B(\lambda_k) $. Soit $ I = \{ j \in J, B_j = 1 \} $. 
+
+Puisque $ \mathbb E(|I|) = \sum\limits_{j \in J} \lambda_j < \infty $, $I$ est de cardinal fini presque sûrement. 
+
+Soient $$k_I(x,y) = \sum_{i \in I} \phi_i(x) \overline{\phi_i(y)} $$ et $$ p_I(x_1,...,x_{|I|}) = \frac{1}{|I|!} \mathrm{det}(k_I(x_k,x_l))_{1\leqslant k,l \leqslant |I|} $$
+
+Alors le processus ponctuel obtenu en tirant les $B_i$, puis $ |I| $ points selon la densité $ p_I $, a la même loi que le processus $ \xi $.
+
+\textbf{Remarque :}
+
+\begin{itemize}
+
+  \item Ceci amène à un algorithme de simulation, présenté dans \cite{DecreusefondVergne2015}. Plus précisément, dans cet article, un calcul amène à la densité conditionnelle de la position du $ n+1 $-ème point sachant la position des $n$ précédents. 
+  
+  Pour pouvoir tirer selon une telle densité, il faut utiliser beaucoup de rejet, et cela ne devient plus très efficace à partir d'environ 1000 points. Pour simuler les DPP, il faut donc les \textbf{restreindre}, et les \textbf{tronquer} à un nombre fixé de points, en considérant un noyau tronqué, c'est à dire le même noyau mais dont on a coupé la somme à un nombre fini de termes : autrement dit, simuler selon un noyau de la forme $$ k_n(x,y) = \sum_{k = 1}^n \phi_i(x) \overline{\phi_i(y)} $$
+
+\end{itemize}
+
+\textbf{Définition :} Soit $K$ un opérateur intégral (localement à trace, auto-adjoint) de noyau $k$ (de type positif). Si $ (\phi_k)_{0 \leqslant k \leqslant n} $ sont des vecteurs propres orthonormés de $K$, on appelle noyau tronqué à $n$ points, ou noyau de projection sur $ \{ \phi_k \} \subset L^2(E, \lambda)$, le noyau $$ k_n(x,y) = \sum_{k = 1}^n \phi_i(x) \overline{\phi_i(y)} $$
+
+\textbf{Proposition :} Un processus déterminantal $ \xi $ ayant un tel noyau vérifie $$ \xi(E) = |\xi_E| = n $$ presque sûrement.
+
+\textbf{Démonstration :} La démonstration est un calcul que je trouve très éclairant au vu de tout ce que nous avons vu jusqu'à présent.
+
+En effet, on a : 
+
+\begin{align*} \mathbf E(\xi(E)) &= \int \rho_1(x) \mathrm d \lambda(x) \\ &= \int K(x,x) \mathrm d \lambda(x) \\ &= \sum_{k=1}^n \int |\phi_k(x)|^2 \mathrm d \lambda (x) \\ &= n \end{align*}
+
+Par un argument plus technique, on montre ensuite que $ \xi(E) \leqslant n $ presque sûrement, ce qui montre le résultat.
+
+\textbf{Proposition :} Soit $ \xi  $ un processus ponctuel déterminantal de noyau $k$ associé à l'opérateur $K$. On a $ \mathbb P(\xi(E) \leqslant n)  = 1 $ si et seulement si le rang de $ K $ est $ \leqslant n $. Si le rang vaut $n$, alors il existe une famille finie $ \lambda_1, ..., \lambda_n $ dans $ ]0,1]$ de valeurs propres de $K$ et une famille de vecteurs propres $ \phi_1,...,\phi_n$ de vecteurs propres orthonormés tels que $$ k(x,y) = \sum_{k=1}^n \lambda_k \overline{\phi_k(x)} \phi_k(y) $$
+
+On a aussi que $ \mathbb P(\xi(E) = n)  = 1  $ si et seulement si le rang de $K$ vaut $n$. Alors $K$ est un opérateur de projection orthogonale sur un sous-espace de dimension $n$, et les valeurs propres dans la décomposition précédentes sont toutes égales à $1$.
+
+\textbf{Théorème :} Soit $\xi$ un processus ponctuel déterminantal sur $(E, \lambda)$, on note $ (\lambda_j)_{j \in J} $ ($J = [\![1,n]\!]$ ou $\mathbf N$) les valeurs propres de l'opérateur intégral associé.
+
+Pour chaque sous-ensemble fini $ I $ de $ J $, on note $$ c_I = \prod_{i \in I} \lambda_i \prod_{i \notin I} (1-\lambda_i)  $$
+
+$ c_I $ est la probabilité que, dans le tirage des variables aléatoires de Bernoulli $ B_i \sim \mathcal B(\lambda_i) $ (cf. théorème fondamental), $ I $ soit exactement l'ensemble des variables \og activées \fg \, (i.e., tirées à \og $1$ \fg)
+
+Alors, la $n$-ème densité de Janossy (par rapport à $\lambda$) de $\xi$ existe et est donnée par $$ j_n(x_1,...,x_n) = \sum_{ \substack{I \subset J \\ |I| = n } } c_I p_I(x_1,...,x_n) $$ où, à nouveau $$ p_I(x_1,...,x_{|I|}) = \frac{1}{|I|!} \mathrm{det}(k_I(x_k,x_l))_{1\leqslant k,l \leqslant |I|}$$ 
+
+Ceci signifie que, \textit{conditionnellement à }, $ \xi(E) = n $, les points sont distribués selon la mesure de densité $$ p_n(x_1,...,x_n) = \frac{ \sum_{ \substack{I \subset J \\ |I| = n } } c_I p_I(x_1,...,x_n) }{ \sum_{ \substack{I \subset J \\ |I| = n } } c_I } $$ 
+
+
+
+
+
+
+
+
+
+
+
+
+\textbf{Remarque :} Il existe des variantes aux processus déterminantaux : les processus permanentaux et les processus $\alpha$-déterminantaux.
+
+\textbf{Définition :} Le \textit{permanent} d'une matrice $A$ carrée de taille $n$ est défini par $$ \mathrm{per}(A) = \sum_{\sigma \in \mathfrak S_n} \prod_{k=1}^n a_{i,\sigma(j)} $$ 
+
+où $\mathfrak S_n$ est le groupe des permutations sur l'ensemble $[\![ 1,n ]\!] = \{1,...,n\} $.
+
+On note le lien avec le déterminant : $$ \mathrm{det}(A) = \sum_{\sigma \in \mathfrak S_n} \varepsilon (\sigma) \prod_{k=1}^n a_{i,\sigma(j)} $$ 
+
+où $\varepsilon$ désigne le morphisme signature. 
+
+Le permanent permet de définir les processus permanentaux par une construction analogue à celle des processus déterminantaux (mais en utilisant le permanent au lieu du déterminant). 
+
+Plus généralement : 
+
+\textbf{Observation :} La signature $\varepsilon (\sigma)$ d'une permutation peut s'écrire $(-1)^{n - c(\sigma)}$ où $c(\cdot)$ est l'application qui renvoie le nombre de cycles dans la décomposition en produit de cycles à supports disjoints d'une permutation.
+
+Ceci mène la généralisation suivante :
+
+\textbf{Définition :} Le $\alpha$-déterminant d'une matrice $A$ (carrée de taille $n$) est défini par $$ \mathrm{det}_\alpha A = \sum_{\sigma \in \mathfrak S_n} \alpha^{n-c(\sigma)}\prod_{k=1}^n a_{i,\sigma(j)} $$ 
+
+Pour $\alpha = -1$, $ \mathrm{det}_\alpha = \mathrm{det}_{-1} = \mathrm{det} $. Pour $\alpha = 1$, $ \mathrm{det}_\alpha = \mathrm{det}_{1} = \mathrm{per} $. Cette généralisation donne naissance, par une construction toujours analogue, aux processus $\alpha-$déterminantaux, qui sont introduits et étudiés dans \cite{VereJones1997}. En particulier, le théorème fondamental est modifié pour donner :
+
+\textbf{Théorème :} Si $- \frac 1 \alpha$ est un entier (strictement) positif, la loi du nombre total de points dans une région donnée est la loi d'une somme de variables aléatoires binomiales indépendantes de paramètres $$(-\frac 1 \alpha, \alpha \lambda_k)$$
+
+Si $\alpha > 0$, la loi du nombre total de points dans une région donnée est la loi d'une somme de variables aléatoires binomiales \textit{négatives} indépendantes de paramètres 
+
+$$(\frac 1 \alpha, \frac{\alpha \lambda_k}{\alpha \lambda_k + 1})$$
+
+Pour rappel, la loi binomiale négative de paramètres $(r,p)$ compte le nombre d'échecs qu'il a fallu rencontrer avant d'obtenir $r$ succès de tirage successif de Bernoullis $\mathcal B(p)$ indépendantes : $\mathbf P(X = k) = \binom{r+k-1}{r-1}(1-p)^kp^r$ pour $k\geqslant 1$, pour $r=1$, on retrouve la loi géométrique $\mathcal G(p)$. La généralisation à $ r > 0 $ quelconque se fait en remplaçant le coefficient binômial par son généralisé $ \binom{r+k-1}{r-1} = \binom{r+k-1}{k}= \frac{(r+k-1)(r+k)...(r)}{k!}$.
+
+\subsection{Ginibre, Bergman, et Ginibre projeté}
+
+Les deux noyaux qui vont particulièrement nous intéresser pour la suite sont les noyaux de Ginibre et Bergman.
+
+\textbf{Définition :} Le processus déterminantal de Ginibre sur $ E = \mathbf C $ (muni de la mesure de Lebesgue) ayant pour noyau $$ k(x,y) = \frac 1 \pi e^{x \overline y} e^{- \frac 1 2 (|x^2| + |y|^2)} $$ (ce noyau est donc appelé noyau de Ginibre).
+
+\textbf{Proposition :} Ce noyau s'écrit sous la forme $$ k(x,y) = \sum_{n \in \mathbf N} \phi_n(x) \overline{\phi_n(y)}$$
+
+où les $(\phi_n)$ sont une base hilbertienne de vecteurs propres pour l'opérateur intégral $K$ associé. Cet opérateur intégral est auto-adjoint et localement à trace, mais il n'est pas à trace.
+
+Vu la forme de la décomposition, son spectre est réduit à $ \{1\} $. De plus, la multiplicité de cette valeur propre est visiblement infinie. En particulier, au vu du théorème fondamental, il a un nombre infini (dénombrable) de points presque sûrement.
+
+Il se trouve que l'on sait expliciter ses fonctions propres : $$ \phi_n(x) = \frac{1}{\sqrt{\pi n!}} e^{- \frac 1 2 |z|^2} z^n $$
+
+\textbf{Proposition :} Soit $ \xi $ un processus déterminantal de Ginibre. Alors la loi de $\xi$ est invariante par translation et par rotation : En notant $\mu$ sa loi, on a pour toute partie $A$ mesurable de $ \mathbf C $, $ \forall x_0 \in \mathbf C, \mu(A) = \mu(A + x_0) $, et $ \forall \theta \in [0,2\pi], \mu(A) = \mu(Ae^{i\theta}) $
+
+\textbf{Remarque :} Le processus de Ginibre est apparu pour la première fois dans le théorème suivant.
+
+\textbf{Théorème :} Soit $Q$ une matrice aléatoire, dont les coefficients sont des variables aléatoire gaussiennes complexes centrées réduites.
+
+Alors, Ginibre \cite{Ginibre1965} a démontré que les valeurs propres complexes de $Q$ forment un processus ponctuel déterminantal sur $\mathbf C$ de noyau $$ k_n(x,y) = \frac 1 \pi e^{-\frac 1 2(|x|^2 + |y|^2)} \sum_{k=0}^{n-1} \frac{(x \overline y)^k}{k!} $$ (en prenant bien sûr pour mesure de référence la mesure de Lebesgue sur $ \mathbf C $).
+
+Lorsque $ n \to \infty $, on obtient à la limite un processus ponctuel ayant pour noyau $$ \displaystyle  k(x,y) = \frac 1 \pi e^{-\frac 1 2(|x|^2 + |y|^2)} \sum_{k=0}^{\infty} \frac{(x \overline y)^k}{k!} = \frac 1 \pi e^{x \overline y} e^{- \frac 1 2 (|x^2| + |y|^2)} $$
+
+Nous avons déjà vu comment \textit{restreindre} un DPP à un compact. Le processus de Ginibre étant invariant par translation et par rotations, cela nous donne un compact naturel sur lequel le restreindre : la boule fermée $ \mathcal B(0,R) $ de $\mathbf C $ de centre $0$ et de rayon $ R $
+
+\textbf{Proposition :} Le noyau $k_R $ du processus de Ginibre restreint à la boule fermée unité est de la forme $$ k^R(x,y) = \sum_{n \in \mathbf N} \lambda_n^R \phi_n^R(x) \overline{\phi_n^R(y)}$$
+
+où les valeurs propres et les vecteurs propres sont $$ \lambda_n^R = \frac{\gamma(n+1,R^2)}{n!} $$  $$ \phi_n^R(x) = \frac{1}{\sqrt{\lambda_n^R}} \phi_n(x) \mathbf{1}_{\mathcal B(0,R)} $$
+
+où les $ \gamma $ sont les fonctions Gamma incomplètes $$ \gamma(s,x) = \int_0^x t^{s-1} e^{-t} \mathrm d t $$
+
+\textbf{Remarques :} 
+
+\begin{itemize}
+  
+  \item Ces formules sont importantes pour pouvoir ensuite faire des calculs de transport optimal (distances de Wasserstein) entre DPPs.
+
+  \item On a bien $ 0 \leqslant \lambda_n^R \leqslant 1 $, et on a $ \lambda_n^R \xrightarrow[R \to \infty]{} 1 $ : quand $R \to \infty $, on retrouve le Ginibre (non restreint) précédent.
+
+\end{itemize}
+
+Il s'agit ensuite de présenter le Ginibre restreint et tronqué. 
+
+\textbf{Définition :} Le processus de Ginibre restreint (à $\mathcal B(0,R)$) et tronqué (à $N$) est la troncation à $N$ points du Ginibre restreint à $\mathcal B(0,R)$ (attention, pas l'inverse).
+
+Son noyau s'écrit donc sous la forme $$ k^R_N(x,y) = \sum_{n = 0}^{N-1} \lambda_n^R \phi_n^R(x) \overline{\phi_n^R(y)} $$
+
+Parlons enfin du noyau de Bergman, qui devrait nous occuper au second semestre.
+
+\textbf{Définition :} Le noyau de Bergman sur la boule unité de $\mathbf C $ (par rapport à la mesure de Lebesgue) est celui donné par $$ k(x,y) = \frac{1}{\pi(1-x\overline y)^2} = \frac 1 \pi \sum_{k=0}^\infty (k+1)(x \overline y)^k $$
+
+Ses fonctions propres sont visibles, à constante près, dans la décomposition à droite : un petit calcul montre que le spectre est $ \{ 1\}$ et que les fonctions propres normées sont les $ \phi_k(x) = x^k \sqrt{\frac{ \pi }{k + 1}}$
+
+\textbf{Remarque :} Le noyau de Bergman est celui qui était présenté au début de cette partie : l'ensemble des zéros dans le disque unité de fonctions analytiques gaussiennes forment un processus ponctuel déterminantal dont le noyau est celui de Bergman.
+
+\section{Transport optimal}
+
+Pour cette partie, les références sont : \cite{ParisEst2022}, \cite{Villani2009}, \cite{Orsay2022}, \cite{DecreusefondMoroz2021}
+
+\subsection{Motivation, problème général}
+
+Le transport optimal a des applications et est utilisé en machine learning, en \og computer graphics \fg, chimie quantique, dynamique des fluides, en optique en économie et en statistiques.
+
+Le problème du transport optimal a été introduit par Monge au 18ème siècle. Étant donnée une configuration spatiale (initiale) de ressources, à transporter en un configuration finale, comment faire ceci en minimisant un coût $c(x,y)$ de transport d'une ressource en $x$ vers $y$. Il modélise le problème dans le cadre de la théorie de la mesure, en considérant que les distributions initiales et finale $ \mu $  et $ \nu $ sont des mesures de probabilité.
+
+Le problème initial tel que posé par Monge est le suivant :
+
+\textbf{Définition :} (Problème du transport de Monge)
+
+Étant donnée une fonction de coût $c : E \times E \to \mathbf R^+ $ sur un espace Polonais $E$ \footnote{lui prenait $ E = \mathbf R^3 $. La formulation générale est venue plus tard, lorsque d'autres se sont demandés quelles hypothèses, minimales, mais les plus générales possibles, on pouvait obtenir une théorie riche.}, (par exemple, $ c(x,y) = d(x,y)$), et deux mesures de probabilité $ \mu $, $ \nu $ sur $E$ (muni de sa tribu borélienne), minimiser sur $T : E \to E $ le coût de transport $$ \displaystyle C(T) = \int c(x,T(x)) \mathrm d \mu(x) $$ sous la contrainte \og $\nu$ est la mesure image de $\mu$ par $T$ \fg \,, ce que l'on note $ T_{\# \mu} = \nu $.
+
+Dans ce cadre, il existe des situations où il n'y a pas d'application de transport (penser au cas où $ \mu $ est une mesure de Dirac), des cas où il y a des applications de transport, mais pas d'optimale, des cas où une ou plusieurs applications sont optimales selon le coût, des cas où il y a toujours plusieurs applications de transport optimales, et quelque rares cas où il existe bien une, et une seule, application de transport optimale.
+
+Le problème apparaît donc comme assez mal posé : on aimerait un problème qui soit \textit{bien posé}, au sens où on aurait un résultat général qui donnerait, si possible indépendamment du coût, l'existence, et si possible l'unicité, d'une solution optimale.
+
+Lorsque l'on regarde en détail les cas pathologiques précédents (qui sont en fait la majorité des cas), on voit que le principal problème réside en cela que, dans le cadre du problème de Monge, on ne peut pas \og casser \fg\, les ressources spatialement. Par exemple, dans le cas où $ \mu $ est une mesure de Dirac $ \delta_x $, si $ \nu = T_{\#\mu} $, on voit que nécessairement, $ \nu = \delta_{T(x)} $ : on ne peut pas \og casser \fg\, la ressource en $x$ pour \og l'éparpiller \fg \, , la \og redistribuer \fg \, dans $E$.
+
+C'est\footnote{probablement...} en se basant sur cette idée que L. Kantorovich a proposé une variante du problème, qui se trouve en fait être une généralisation. On rappelle qu'un noyau de probabilité, ou noyau de Markov \footnote{ici, les noyaux seront des noyaux de Markov car on transporte d'un espace dans lui-même.} sur $(E, \mathcal E)$, est une application $ K : E \times \mathcal E \to [0,1] $, telle que pour tout $x \in E$, $ K(x, \cdot )$ est une mesure de probabilité, et pour tout $ A \in \mathcal E $, $K(\cdot, A)$ est mesurable. Kantorovich propose de considérer un noyau de Markov $ K $, et d'interpréter la mesure $ K(x, \cdot) $, pour chaque $ x \in E $, comme la mesure de probabilité qui représente la distribution dans $E$ des ressources présentes au point $x$. Autrement dit, les ressources au point $x$ sont distribuées dans $E$ selon la mesure $ K(x, \cdot) $. 
+
+La distribution finale est alors la mesure $$ \nu : C \mapsto \iint \mathbf{1}_C(y) K(x,\mathrm dy) \mu (\mathrm d x) = \int K(x,C) \mu (\mathrm d x) $$
+
+Un aspect important de cette généralisation est qu'elle permet de réécrire le problème d'une manière symétrique en $\mu$ et $ \nu $. En effet, on rappelle qu'étant donné un noyau de Markov $K$ sur $E$ et une mesure de probabilité $ \mu $, on peut construire une mesure produit, notée $ \pi = K \otimes \mu $. La première marginale de cette mesure produit est $ \mu $, et la seconde est la mesure $ \nu $ définie précédemment. En fait, probabilistiquement, cette construction représente une manière de construire la loi d'un couple de variables aléatoires $(X,Y)$, où $X$ est distribuée selon $ \mu $, et $ Y $ selon $ \nu $. Plus précisément, cette construction donne la loi du couple $(X,Y)$, connaissant la loi de $X$, et la \textit{loi conditionnelle} de $Y$ sachant $X$ : Sachant $X = x$, la loi de $Y$ est la mesure de probabilité $K(x, \cdot) $.
+
+Avec cette construction, on a pour toute fonction $f$ l'égalité $$ \iint f(x,y) \mathrm d K(x,\mathrm d y) \mathrm d \mu(x) = \int f(x,y) \mathrm d \pi(x,y) $$
+
+Cette loi $ \pi $ représente donc la manière de transporter $ \mu $ sur $\nu$, et le coût de transport total devient une intégrale par rapport à $ \pi $.
+
+\textbf{Définition :} Soient $\mu$, $\nu$ deux mesures de probabilité sur $(E, \mathcal E)$. Un \textit{couplage} entre deux mesures de probabilité $ \mu $ et $ \nu $ est une mesure $ \pi $ sur $ (E^2, \mathcal E^{\otimes 2}) $ dont les lois marginales sont $\mu$ et $\nu$. 
+
+Une telle mesure de probabilité revient exactement à la loi d'un couple de variables aléatoires $ (X,Y) $, dont les lois marginales (lois de $X$ et de $Y$), sont $\mu$ et $\nu$.
+
+Dans toute la suite, si $\mu$ et $\nu $ sont deux mesures de probabilité, on notera $ \Pi(\mu,\nu)$ l'ensemble des couplages entre $\mu$ et $\nu$.
+
+Ceci amène au problème de Kantorovich :
+
+\textbf{Définition} (Problème de Monge-Kantorovich)
+
+Étant donnée une fonction de coût $c : E \times E \to \mathbf R^+ $ sur un espace Polonais $E$, et deux mesures de probabilité $ \mu $, $ \nu $ sur $E$, minimiser sur l'ensemble des couplages $ \pi \in \Pi(\mu,\nu)$ le coût de transport $$ \displaystyle C(\pi) = \int c(x,y) \mathrm d \pi(x,y) $$
+
+\textbf{Remarque :} Le problème de Monge-Kantorovich est bien une généralisation du problème précédent : étant donnée $ T : E \to E $ mesurable, on appelle \textit{couplage déterministe} la loi d'un couple de v.a. de la forme $(X,T(X))$. Alors, on voit que, si $\pi$ est un couplage déterministe, $$ \int c(x,y) \mathrm d \pi(x,y) = \int c(x,T(x)) \mathrm d \mu(x) $$ ce qui ramène au problème précédent.
+
+\subsection{Existence}
+
+Soit $(E,d)$ un espace métrique.
+
+\textbf{Définition :} Soit $ f : E \to \overline{\mathbf R^+} $ une fonction. Il y a équivalence entre
+
+(i) $ \forall x_0 \in E, \forall \varepsilon > 0, \exists \alpha > 0, \forall x \in E, d(x,x_0) \leqslant \alpha \implies f(x_0) - \varepsilon \leqslant f(x) $
+
+(ii) Pour tout $r \in \mathbf R$, l'ensemble $\{x \in E, f(x) \leqslant r\} = f^{-1}(]-\infty, r])$ est fermé
+
+(iii) L'épigraphe $ \{ (x,\alpha) \in X \times \mathbf R, \alpha \geqslant f(x) \}$ de $f$ est fermé
+
+(iv) Pour toute suite $(x_n)_{n \in \mathbf N} $ de $E$ convergeant vers $ x \in E$, on a $ \displaystyle \mathrm{lim inf}_{n \to \infty} f(x_n) \geqslant f(x)$
+
+Si l'une de ces assertions sont vérifiées, on dit que $f$ est \textit{semi-continue inférieurement}.
+
+\textbf{Proposition :} Toute fonction continue est semi-continue inférieurement. 
+
+\textbf{Proposition :} Toute borne supérieure $ \displaystyle \sup_{i \in I } f_i $ de fonctions semi-continues inférieurement est semi-continue supérieurement.
+
+\textbf{Remarque :} La semi-continuité supérieure est définie de manière analogue, en inversant les notions (ou en disant que $f$ est semi-continue supérieurement si $-f$ est semi-continue inférieurement).
+
+\textbf{Proposition :} Une fonction est continue si et seulement si elle est semi-continue inférieurement et supérieurement. 
+
+\textbf{Exemple :} Une fonction indicatrice $ \mathbf{1}_A $ est semi-continue inférieurement si et seulement si $A$ est un ouvert.
+
+\textbf{Remarque :} Les fonctions semi-continues sont forment une généralisation de la continuité. On sait qu'une fonction continue sur un compact à valeurs réelles est bornée et atteint ses bornes (supérieure et inférieure). Pour le problème du transport optimal, il ne nous importe que de \textit{minimiser} le coût. Pour cette raison, puisque l'on ne souhaite que minimiser des fonctions, cela n'apporte rien de supposer que les supposer semi-continues supérieurement ; et ainsi, toute la littérature autour du transport optimal fut rédigée en supposant les fonctions de coût semi-continues inférieurement. Notamment, le fait que les fonction s.c.i. atteignent leur minimum est celle qui permet le théorème suivant.
+
+\textbf{Théorème :} On suppose que $(E,d)$ est polonais. Soit $ c : E \times E \to \overline {\mathbf R^+} $ une fonction de coût semi-continue inférieurement.
+
+Pour toutes mesures de probabilité $ \mu $ et $ \nu$ sur $E$ muni de sa tribu borélienne, il existe $ \pi^* \in \Pi(\mu,\nu)$ tel que $$ \iint c(x,y) \mathrm d \pi^*(x,y) = \inf_{\pi \in \Pi(\mu, \nu)} \iint  c(x,y) \mathrm d \pi(x,y) $$
+
+\textbf{Remarque :} Dans le cas particulier de la dimension 1 ($E = \mathbf R$), le transport optimal est un problème résolu grâce au fait que l'on peut inverser les fonctions de répartition. Citons le résultat principal bien que nous n'en aurons pas besoin pour la suite.
+
+\textbf{Définition :} Soit $ F : \mathbf R \to \mathbf R $ une fonction de répartition, son \og inverse \fg\, $ F^{-1} : [0,1] \to \mathbf R$ est défini par 
+$$ \forall \alpha \in [0,1], F^{-1}(\alpha) = \inf \{x \in \mathbf R, F(x) \geqslant \alpha \} $$
+
+pour chaque $ \alpha \in [0,1]$, le nombre $F^{-1}(\alpha)$ est appelé quantile d'ordre $ \alpha $.
+
+\textbf{Proposition : } (Transport optimal en dimension 1)
+
+Grâce au fait que l'on peut inverser les fonctions de répartition en dimension $1$, on peut montrer que :
+
+(1) Si $ c : \mathbf R^2 \to \overline{\mathbf R^+} $ est semi-continue inférieurement et vérifie $$ \forall x_1 \leqslant x_2, \forall y_1, \leqslant y_2, c(x_1,y_1) + c(x_2,y_2) \leqslant c(x_1,y_2) + c(x_2,y_1) $$
+
+alors, pour toutes mesures de probabilité $ \mu, \nu $, s'il existe $(x_0,y_0) \in \mathbf R^2$ tel que $ \displaystyle \int c(x_0,y) \mathrm d \nu(y) $ et $ \displaystyle \int c(x_0,y) \mathrm d \nu(y) $ soient finies, le couplage optimal est donné par $ \pi_+ = \mathrm{Loi}(F_\mu^{-1}(U),F_\nu^{-1}(U))$, où $ U \sim \mathcal U([0,1]) $. Il est appelé couplage croissant.
+
+(2) Si $ c : \mathbf R^2 \to \overline{\mathbf R^+} $ est semi-continue inférieurement et vérifie $$ \forall x_1 \leqslant x_2, \forall y_1, \leqslant y_2, c(x_1,y_1) + c(x_2,y_2) \geqslant c(x_1,y_2) + c(x_2,y_1) $$
+
+alors, pour toutes mesures de probabilité $ \mu, \nu $, s'il existe $(x_0,y_0) \in \mathbf R^2$ tel que $ \displaystyle \int c(x_0,y) \mathrm d \nu(y) $ et $ \displaystyle \int c(x_0,y) \mathrm d \nu(y) $ soient finies, le couplage optimal est donné par $ \pi_- = \mathrm{Loi}(F_\mu^{-1}(U),F_\nu^{-1}(1-U))$, où $ U \sim \mathcal U([0,1]) $. Il est appelé couplage décroissant.
+
+\textbf{Remarque :} La première (resp. deuxième) inégalité vérifiée par $c$ dans le théorème est vraie dès que $c(x,y) = \theta(x-y) $ où $ \theta : \mathbf R \to \mathbf R $ est convexe (resp. concave). Si $c$ est de classe $ \mathcal C^2 $, elle est vérifiée si et seulement si les coefficients non-diagonaux de la Hessienne de $c$ sont négatifs (resp. positifs).
+
+
+\subsection{Monotonicité cyclique, dualité et Breiner}
+
+Passons rapidement sur la monotonie cyclique, qui ne sera pas la plus utile pour la suite vu la direction de recherche que nous avons finalement choisie.
+
+\textbf{Définition :} Soit $c : E \times E \to \mathbf R^+ $ une fonction de coût. On dit qu'une partie $ \Gamma \subset E \times E $ est $c$-cycliquement monotone si, pour toute famille $(x_1,y_1),...,(x_p,y_p) \in \Gamma $, on a $$ \sum_{k=1}^p c(x_i,y_i) \leqslant c(x_i,y_{i+1}) $$ en posant $y_{p+1} = y_1 $
+
+Cette définition n'a pour but que la proposition suivante.
+
+\textbf{Proposition :} En reprenant les même notations, si $ \Gamma \subset E \times E$ est $c$-cycliquement monotone, alors pour toute permutations $ \sigma $ de l'ensemble des indices, on a $$ \sum_{i=1}^p c(x_i, y_i) \leqslant \sum_{i=1}^p c(x_i, y_{\sigma(i)}) $$ 
+
+Autrement dit, transporter les $ x_i$ sur les $y_j$ en transportant $ x_i$ sur $y_i$ pour chaque $i$ est optimal.
+
+\textbf{Définition :} Le support d'une mesure de probabilité $ \mu $ sur $E$ est le plus petit fermé $F$ tel que $ \mu(F) = 1$. 
+
+C'est aussi l'ensemble des points $ x \in E $ tels que : $ \forall \delta > 0, \mu(B(x, \delta)) > 0 $
+
+\textbf{Théorème :} Soit $c : E \times E \to \mathbf R^+ $ une fonction de coût continue, et $\mu, \nu $ tels que l'on puisse transporter $ \mu $ vers $ \nu $ de manière finie.
+
+Alors un couplage $ \pi \in \Pi(\mu, \nu) $ est optimal si et seulement si son support est $c$-cycliquement monotone.
+
+\textbf{Remarque :} Il existe une troisième condition équivalente faisant intervenir a notion de $c$-convexité, mais cela nous écarterait trop de notre problème initial, qui est de considérer du transport optimal entre DPPs.
+
+La dualité de Kantorovich, présentée ci-dessous, n'est pas inutile pour le transport optimal entre DPPs ; elle est citée dans \cite{DecreusefondMoroz2021} par exemple.
+
+\textbf{Observation :} Si $ f : E \to \mathbf R $ est intégrable, et si $ \pi \in \Pi(\mu, \nu) $, on a $ \displaystyle \int f(x) \mathrm d \pi (x,y) = \int f(x) \mathrm d \mu (x) $. De même, $ \displaystyle \int f(y) \mathrm d \pi (x,y) = \int f(y) \mathrm d \nu (y) $.
+
+Donc, si $ \psi, \phi : E \to \mathbf R $ sont deux fonctions intégrables, on a $$ \int \psi(x) + \phi(y) \mathrm d \pi (x,y) = \int \psi(x)  \mathrm d \mu (x)  + \int \phi(y) \mathrm d \nu (y) $$
+
+Fixons une fonction de coût $c$. Si on prend alors $ \psi, \phi $ telles que $ \forall x,y \in E, \psi(x) + \phi(y) \leqslant c(x,y) $, voit que pour tout $ \pi \in \Pi(\mu,\nu) $, $$ \int \psi(x)  \mathrm d \mu (x) + \int \phi(y) \mathrm d \nu (y) \leqslant \int c(x,y) \mathrm d \pi (x,y) $$
+
+Autrement dit, en notant $ \Phi_c $ l'ensemble des couples de fonctions continues bornées $ \psi, \phi $ telles que $ \psi(x) + \phi(y) \leqslant c(x,y) $, on a $$ \sup_{(\psi,\phi) \in \Phi_c} \left\{  \int \psi(x) \mathrm d \mu (x) + \int \phi(y) \mathrm d \nu (y) \right\} \leqslant \inf_{\pi \in \Pi(\mu,\nu) } \int c(x,y) \mathrm d \pi (x,y) $$
+
+On a donc une inégalité... Mais, la borne inférieure porte sur \textit{toutes} les fonctions $ (\psi, \phi) \in \Phi_c $. Cela laisse donc une bonne marche de manoeuvre (pour atteindre le $ \sup $ à droite), non ? N'y aurait-il pas égalité ?
+
+\textbf{Théorème :} (dualité de Kantorovich)
+
+Soit $c : E \times E \to \mathbf R^+ $ une fonction de coût semi-continue inférieurement, et $ \mu, \nu $ des probabilités sur $E$ telles que l'on peut transporter l'une à l'autre de manière finie.
+
+Alors $$ \sup_{(\psi,\phi) \in \Phi_c} \left\{  \int \psi(x) \mathrm d \mu (x) + \int \phi(y) \mathrm d \nu (y) \right\} = \inf_{\pi \in \Pi(\mu,\nu) } \int c(x,y) \mathrm d \pi (x,y) $$
+
+l'égalité reste vraie en élargissant $ \Phi_c $ la classe des couples de fonctions $ \mu/\nu $-intégrables.
+
+Enfin, n'ai pas compris certains passages de \cite{DecreusefondMoroz2021} avant des relire à la lumière du théorème de Breiner.
+
+\textbf{Théorème :} (Breiner)
+
+Soit $E = \mathbf R^n $ muni de sa norme euclidienne standard $ \| \cdot \| $. On considère le coût quadratique $ c(x,y) = \frac 1 2 \| x - y\|^2$. 
+
+Soient $\mu, \nu$ deux mesures de probabilité sur $ \mathbf R^n $ équipé de sa norme euclidienne canonique. On suppose que :
+
+(1) $ \mu $ est absolument continue (i.e., admet une densité, par Radon-Nikodym) par rapport à la mesure de Lebesgue, 
+
+(2) On peut transporter $ \mu $ vers $ \nu $ de manière \textit{finie} pour le coût ci-dessus.
+
+Alors il existe un unique couplage optimal $ \pi^* \in \Pi(\mu, \nu) $. De plus, ce couplage est déterministe : il existe une application de transport $T^*$ telle que $ \nu = T^*_{\# \mu} $, telle que $ \pi(\mathrm d x \mathrm d y) = \mu(\mathrm d x) \delta_{T^*(x)}(\mathrm d y) $ (c'est à dire qu'il existe $T^*$ telle que  $\pi^*$ est la loi de la variable $ (X,T^*(X)) $, où $ X\sim \mu $).
+
+De surcroît, $ T^* $ s'écrit sous la forme $ T^* = \nabla \phi $, où $ \phi : \mathbf R^n \to \overline{\mathbf R^+}$ est une fonction convexe finie $\mu$-presque partout.
+
+\textbf{Remarque :} $T^*$ est essentiellement unique, au sens où si $ T'$ est une autre solution optimale pour le transport de Monge, alors $ T^* = T' $ $\mu$-presque partout.
+
+\subsection{Distances de Wasserstein}
+
+Pour définir les distances de Wasserstein, il faut se restreindre aux fonction de coût de la forme $$ c_p(x,y) = d(x,y)^p $$
+
+Soient $ \mu, \nu $ deux mesures de probabilité sur l'espace polonais $E$, on note $$ \mathcal T_p(\mu, \nu) = \inf_{\pi \in \Pi(\mu,\nu)} = \iint c_p(x,y) \mathrm d \pi(x,y) = \iint d(x,y)^p \mathrm d \pi(x,y) $$ la valeur du transport optimal de $ \mu $ vers $ \nu $ pour le coût $c_p$.
+
+Ce \textit{coût transport optimal} mesure... un coût, optimal, qu'il faudrait dépenser pour transporter $ \mu $ vers $ \nu $. On voit, intuitivement, que si les parties de forte probabilité pour $ \nu $ sont loin de celles de forte probabilité pour $ \mu $, le coût de transport optimal en pâtira (augmentera).
+
+Donc, d'une certaine manière, il est naturel de se dire que le transport optimal représente une forme de \textit{distance} sur l'espace des probabilités sur $E$. Mais peut-on alors en déduire une vraie \textit{distance} (au sens des espaces métriques) sur l'ensemble des mesure de probabilité sur $E$ ?
+
+\textbf{Définition :} Soit $ p \in [1, +\infty [$. On note $ \mathcal P_p(X) $ l'ensemble des mesures boréliennes $\mu$ sur $E$ \og admettant un moment d'ordre $p$ \fg\, , c'est à dire telles que $ \displaystyle \int d(x_0,x)^p \mathrm d \mu(x) < \infty $. Ceci ne dépend pas du point $x_0$ choisi.
+
+\textbf{Proposition :} La quantité $$ W_p(\mu, \nu) = \mathcal T_p(\mu, \nu)^{1/p} $$ définit une distance sur l'ensemble $ \mathcal P_p(X) $.
+
+\textbf{Proposition :} (Caractérisation duale de $W_1$)
+
+Soient $ \mu, \nu \in \mathcal P_1 $. Alors $$ W_1(\mu,\nu) = \sup\left\{ \left| \int f \mathrm d \mu - \int f \mathrm d \nu \right|, f \: \text{1-lipschitzienne} \right\} $$
+
+\textbf{Remarque :} On peut montrer (\cite{ParisEst2022}) que la topologie induite par les distances de Wassertein a des liens avec la convergence faible.
+
+\subsection{Transport optimal entre DPPs et perspectives}
+
+Le seul article à s'être jamais intéressé au transport optimal entre DPPs est \cite{DecreusefondMoroz2021}.
+
+L'objectif derrière cette étude est/était de comparer le processus déterminantal de Ginibre $ \xi^R $ restreint à la boule $ \mathcal B(0,R) $ et celui de Ginibre restreint à $ \mathcal B(0,R) $ et tronqué à $N$ points, noté $ \xi^R_N $.
+
+En effet, la motivation initiale était de pouvoir \textit{simuler} le processus déterminantal de Ginibre. Pour rappel, il présente une infinité de points presque sûrement : il est donc impossible de le simuler stricto-sensu. Alors, les versions restreintes et restreintes tronquées permettent d'en simuler des variantes. 
+
+La question se pose alors de la différence entre ces différentes versions : À quel point commet-on une erreur en simulant $ \xi^R_N $ plutôt que $ \xi^R $ par exemple ? Cette question est assez vague au premier abord, il s'agit de la formaliser.
+
+Peut-on trouver un résultat quantitatif, un théorème, qui apporte une forme de réponse ? Dans cette perspective, les auteurs de \cite{DecreusefondMoroz2021} ont considéré les distances de Wasserstein entre DPPs : en effet, ces dernières constituent une forme de \textit{distance} entre mesures de probabilité : si l'on arrive à calculer, où à majorer, cette distance, on obtient bien un résultat concret qui quantifie l'erreur décrite précédemment.
+
+La principale distance de Wasserstein considérée dans l'article, et qui nous intéressera pour la suite, est la suivante :
+
+\textbf{Définition :} La distance de Kantorovich-Rubinstein est la distance de Wasserstein-1 pour la distance $$ d(\xi, \zeta) = |\xi \Delta \zeta| $$ sur l'espace des configurations.
+
+Elle est donc définie par $$ \mathcal W_{KR}(\mu, \nu) = \inf_{\pi \in \Pi(\xi, \zeta)} \mathbb E_\pi(|\xi \Delta \zeta|) $$ 
+
+(ici, on confond les variables aléatoires $ \xi, \zeta $ et leurs lois).
+
+Cette distance dit des choses sur la différence du \textit{nombre de points} entre les processus $ \xi $ et $ \zeta $, mais ne dit rien quant aux \textit{différences de positions} entre ces points.
+
+Le principal résultat de l'article est alors de dire que :
+
+\textbf{Théorème :} Soit $R > 0$. On tronque le Ginibre projeté à $ N_R = (R+c)^2 $ points : soient $ \xi^R $ et $ \xi^R_{N_R} $ des DPPs ayant ces lois.
+
+Alors
+
+$$ \mathcal W_{KR}(\xi^R, \xi^R_{N_R}) \leqslant \sqrt{\frac{2}{\pi}} R e^{-c^2} $$
+
+\bigskip
+
+Par la suite, nous allons nous intéresser au transport optimal entre DPPs. Nous allons essayer d'obtenir des résultats analogues au précédent, ou d'une quelconque autre forme, sur le processus de Bergman. Notamment, ses troncations n'ont jamais été étudiées.
+
+Si ceci ne donne rien : il se trouve qu'en étudiant le transport optimal, après un peu de réflexion et une petite maturation des idées, j'ai eu quelques idées, qui m'ont amené a formuler la conjecture suivante :
+
+\textbf{Conjecture :}
+
+Soit $E = \mathbf R^n $ muni de sa tribu borélienne et de la mesure de Lebesgue $ \lambda $. Soient $A,B$ deux parties mesurables de $E$, vérifiant des hypothèses de régularité minimales à préciser (disons ouverts, dans un premier temps, ou a minima d'intérieur non vide, de sorte que $ \lambda(A),\lambda(B) > 0 $ ). Soient $ \mu_A, \mu_B$ les mesures uniformes sur $A,B$ respectivement.
+
+Soit $ T : \mathbf R^n \to \mathbf R^n $ une application qui soit un $\mathcal C^1$-difféomorphisme de $\mathbf R^n$. On note $ J_T $ sa Jacobienne.
+
+Alors $T$ est un application de transport de $ \mu_A $ vers $ \mu_B $ ($ \mu_B = T_{\# \mu_A} $) si et seulement si 
+
+(1) $T(A) = B$ 
+
+(2) $ \displaystyle \left|\mathrm{det} (J_T(x))\right| = \frac{\lambda(B)}{\lambda(A)}  $ pour tout $x \in A$.
+
+$T$ étant un $\mathcal C^1$-difféomorphisme de $ \mathbf R^n $, ces condition équivalent à
+
+(1) $A = T^{-1}(B)$ 
+
+(2) $ \displaystyle \left|\mathrm{det} (J_{T^{-1}}(y))\right| = \frac{\lambda(A)}{\lambda(B)} $ pour tout $y \in B$.
+
+Pour rappel : une application $ T : \mathbf R^n \to \mathbf R^n $ est de classe $ \mathcal C^1 $ si seulement si (ses dérivées partielles dans n'importe quelle base $\mathbf R^n $ existent et sont continues, mais surtout, si et seulement si) l'application $ a \mapsto J_T(a) $, ou encore l'application $ a \mapsto \mathrm d T_{a} $ ($d T_{a}$ est la différentielle de $T$ en $a$), est (bien définie et) continue. Les conditions $(2)$ équivalent donc au fait que les applications Jacobien $ x \mapsto \mathrm{det} (J_T(x)) $ et $ x \mapsto \mathrm{det} (J_{T^{-1}}(x)) $ sont constantes égale au quotient de l'autre côté de leurs égalités respectives.
+
+Cette conjecture est peut-être complètement fausse, je n'ai pas eu encore assez de temps pour y réfléchir (mais quand même, elle a l'air sacrément vraie).
+
+Si elle est vraie, elle admet peut-être une forme de généralisation suivante : 
+
+Soient $\mu, \nu $ deux mesures de densités $ f,g $ par rapport à la mesure $ \lambda $ de Lebesgue sur $ \mathbf R^n $ ; il faudra peut-être faire quelques hypothèses sur la régularité de $f$ et $g$ (on pourra commencer par le cas où $f$,$g$ sont continues sur $ \mathbf R^n$, ou continues par morceaux sur $\mathbf R$).
+
+Soit $ T : \mathbf R^n \to \mathbf R^n $ une application qui soit un $\mathcal C^1$-difféomorphisme de $\mathbf R^n$. En notant $ J_T $ sa Jacobienne, il se peut que $T$ soit une application de transport de $ \mu $ vers $ \nu $ ($ \nu = T_{\# \mu } $) si et seulement si :
+
+(1) $T(A) = B$ 
+
+(2) $ \displaystyle \left|\mathrm{det} (J_T(x))\right| = \frac{f(x)}{g(T(x))}  $ pour ($\lambda$-presque) tout $x \in A$.
+
+Ce qui équivaut à
+
+(1) $A = T^{-1}(B)$ 
+
+(2) $ \displaystyle \left|\mathrm{det} (J_{T^{-1}}(y)) \right| = \frac{f(T^{-1}(y))}{g(y)} $ pour ($\lambda$-presque) tout $y \in B$.
+
+Si on suppose $f$,$g$ continues sur $A$ et $B$, ceci équivaut à la même chose sans les \og ($\lambda$-presque) \fg\,. Pour $f = \mathbf 1_A / \lambda(A) $ et $ g = \mathbf 1_B / \lambda(B) $
+
+Enfin, une dernière observation : modulo quelque détails, ces équations s'écrivent grosso-modo : $$ \left|\mathrm{det} (J_{T}) \right| = \frac{\displaystyle \mathrm d \mu(T) / \mathrm d \lambda}{\mathrm d \nu / \mathrm d \lambda} \qquad \text{ou} \qquad \left|\mathrm{det} (J_{T^{-1}}) \right| = \frac{\mathrm d \mu / \mathrm d \lambda}{\mathrm d \nu(T^{-1})/\mathrm d \lambda} $$
+
+Qu'en pense-t-on ? On en pense qu'on a sacrément envie de simplifier par $ \mathrm d \lambda $. Et alors ? Et alors, cela implique qu'en fait, je pense qu'on s'en fiche de $\lambda$. J'entends par là qu'il n'y a pas forcément de raison de considérer ici la mesure de Lebesgue. Bon, en fait, si : elle est quand même \textit{régulière} (\textit{inner-regular} et \textit{outer-regular}), et puis, elle est $ \sigma$-finie, aussi. Bref, si quoi que ce que j'ai dit jusqu'à présent est vrai, je pense qu'il y a des chances pour que l'on puisse montrer la même chose pour bien d'autres mesures que $ \lambda $, quitte à faire quelques hypothèses nécessaires.
+
+Aussi, un lien est peut-être à faire avec l'équation de Monge-Ampère. Il faudrait déjà considérer la version plus faible précédente, voir si on peut la modifier pour obtenir quoi que ce soit de vrai (et démontrable), considérer des cas particuliers, pour l'une et pour l'autre des deux versions. 
+
+À voir ! 
+
+
+
+
+\newpage 
+
+\
+
+\newpage
+
+
+\bibliographystyle{plain}
+\bibliography{Rendu}
+
+
+
+\begin{comment}
+
+- Annexe : Quelques lemmes
+
+Ces lemmes sont assez triviaux à démontrer mais m'ont aidé à bien comprendre certains passages de la littérature, à fournir des exemples et contre-exemples en transport. En fait, je doute que cette partie soit très utile à donner. Quoi qu'il en soit, je me suis servi des résultats suivants de nombreuses fois pour comprendre les choses et étudier des exemples. Donc tant qu'à faire, je laisse cet appendix. (quoique ?)
+
+VERIFIER QUON CITE BIEN TOUT 
+
+1) Transport de Monge : Lemmes utiles pour trouver des applications de transport (des T tq T#mu = nu)
+
+
+2) Cours de MACS : Il est équivalent de définie les noyaux de probabilité comme en cours ou en faisant comme dans [3] 
+Car (en notant à la fois p_x et Q(x,...) IYAEE
+(i) Mesurable + proba
+(ii) Pour toute f mesurable.
+
+Ralenti par 
+- Trop de transport ?
+- Preuves ?
+  * Je ne sais pas encore bien gérer quand il faut faire les preuves et ne pas les faire.
+  * Pour moi dans un monde idéal j'essayerais de refaire toutes les preuves en exercice avant de les lire
+  * La complexité temporelle de faire une telle chose est catastrophique. D'ailleurs personne le fait
+  * Il faut trouver un juste milieu. J'ai un peu de mal à le trouver
+- Stress, angoisse
+  * Culpabilité : travailler tout le temps 
+  * Très irrationnel (et incontrôlable, et envahissant)
+  * Peur d'échouer
+  * Impossible d'avoir les idées claires
+  * Périodes de (gros) doute
+  * Cerveau qui travaille sans raison apparente ;  
+  * Sensation d'être réellement malade (psychologiquement)
+  * Suivi psychologique (au moins 1 séance)
+  * Sensation d'être en retard, donc stress encore plus, serpent qui se mord la queue
+  * J'ai fait ce que j'ai pu malgré ça<
+- Juste 
+  * J'ai travaillé dur, pour les cours, pour ce parcours recherche. 
+  * Je compte continuer comme ça. ...dans les limites de ma santé mentale. 
+  * Pourquoi je dis ça, parce que en décembre, il y a eu des signes qui ont montré que j'atteignais les limites de cette dernière
+  * donc c'était une période difficile (mentionner ce mot)
+  * j'ai été voir ma coordinatrice des études, qui m'a dit "je sais exactement ce qui vous arrive et je vous interdit de travailler pendant les vacances de noël"
+  * J'ai repris le travail en Janvier mais du coup y'a un mois et demie de travail que, par rapport au planning que j'avais prévu en tout cas, j'ai pas fourni, pour les raisons que je viens d'expliquer.
+  * MAIS au moins je n'ai pas perdu ma santé mentale, et ça c'est déjà une victoire pour moi. 
+
+Il faudra impérativement tout bien relire
+
+- 3 grands regrets : 
+  * Trop de transport ? Pas assez en parallèle
+  * Trop de pression
+  * Until burn out. -> Santé mentale etc. 
+
+- Question pour L.D.
+  * Perspectives ? 
+  * Que signifiait le truc avec aT + (1-a)T'
+  * Par rapport à "Nombre de points entre R et R-epsilon : qu'est ce qu'on en pense ? Pouvez-vous formuler une direction de recherche dans laquelle vous pensez qu'on peut trouver des trucs ?
+  * Pourquoi la     troncature à un compact L est noté P_L J P_L
+- Petits restes (weekend prochain) :
+  * Espérance conditionnelle sachant un évènement. Tenter de trouver un lien avec le cours de MACS
+
+
+- Trucs à dire 
+  * Puissant cerveau
+  * Vous n'allez pas aimer ma façon de présenter les choses
+  * J'ai fait beaucoup dans la généralité. 
+    + D'une part je suis comme ça, j'aime bien
+    + Mais surtout, on ne manipule pas comme ça des objets qu'on ne maitrise pas ! Il faut bien débrousailler la littérature !
+    + Je ne peux pas avaler une définition sans donner quelques propriétés supplémentaires, pour bien comprendre les choses.
+  * Il reste peut-être des typos
+  * Incohérences de notation possibles (écriture sur une longue période (>24h))
+  * Peut-être des erreurs ? Hier j'ai écrit : "A est auto-adjoint si et seulement si son spectre est positif". Bah frérot
+  * Entre le fait qu'on savait pas trop où on allait en septembre octobre et mon pétage de cable en décembre, il va me rester des questions après l'oral...
+
+- Questions 
+  * **Est-ce que vous avez un argument qui dise "Ah bah c'est mieux les déterminantaux pour les télécoms parce que ça se repousse" ?**
+    + Genre en quoi c'est mieux, si ça l'est, est ce qu'il y a une raison concrète ou c'est juste une motivation
+  * À trace ou localement à trace ? (Thm. 7 / Thm. 22) ; implications entre les deux ?
+  * Pourquoi c'est mieux de projeter ? (Tronquer il faut bien, sinon on a une infinité de points)
+  * [Opt., p.11 vs. Lemme 2 : c'est la même densité du coup ?]
+  * Je vais être de moins en moins autonome, plus on va dans la difficulté, moins la pédagogie est de mise
+  * Qui nous dit que la wasserstein 1 est bien une distance ?
+\end{comment}
+\end{document}

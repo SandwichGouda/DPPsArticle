@@ -1,0 +1,316 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath, amssymb}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\usepackage{parskip}
+\usepackage{geometry}
+
+\usepackage{titling}
+
+\usepackage{comment}
+
+\usepackage{cite}
+
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\usepackage{svg}
+
+\newgeometry{left = 1in, right = 1in, top = 1in}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcounter{cnt}
+
+\setcounter{cnt}{1}
+\newcommand{\cnt}{\thecnt \stepcounter{cnt}}
+
+
+
+\title{\textbf{Optimal transport, determinantal point processes and the Bergman kernel}}
+\author{William DRIOT, Laurent DECREUSEFOND \thanks{LTCI, Télécom Paris \\ 19, place Marguerite Perret, 91120 Palaiseau \\ Contact : william.driot[at]telecom-paris.fr, laurent.decreusefond[at]telecom-paris.fr \\ 2020 Mathematics Subject Classification : 60G55,68Q25,68W25,68W40 \\ Keywords : Determinantal point process, Bergman point process, Bergman Kernel, Optimal transport, Point process simulation}}
+\date{June 2025}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+    We study the Bergman determinantal point process in a theoretical point of view aiming at its simulation. We construct restricted and restricted-truncated variants of the Bergman kernel and show optimal transport inequalities involving the Kantorovitch-Rubinstein Wasserstein distance to show to what extent it is fair to truncate the restriction of this point process to a compact ball of radius $1 - \varepsilon $. We also investigate the deviation of the number of points of the restricted Bergman determinantal point process, indicate which number of points looks like an optimal choice, and provide upper bounds to its deviation, providing an answer to an open question asked in \cite{Decreusefond2016}.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}
+
+Introduced for the first time in \cite{Macchi1975}, determinantal point processes (DPPs) are a particular class of point process, the correlations functions of which can be written as determinants. After having been thoroughly studied from a probabilistic point of view, (see \cite{ShiraiTakahashi2003} and \cite{Soshnikov2000} for instance, among many others), they have been used to model fermion particles \cite{Tamura2006}. They have suprisingly and remarkably appeared in the study of two very elegant mathematical problems : the first one is the point process defined as the set of eigenvalues of random $ n \times n $ matrices with independent complex standard gaussian entries. It turns out that, as n goes to infinity, this point process converges in law to a point process that can be described \cite{Ginibre1965} as a determinantal point process, the kernel of which was thereafter called the Ginibre kernel. The second one is the point process defined as the set of zeroes of Gaussian Analytical Functions (GAF) in the unit disc of the complex plane - the former are analytical functions (i.e., power series), the coefficients of which are all independent complex standard gaussian random variables : as it turns out, this point process can also be described as a determinantal point process, the kernel of which is this time the Bergman kernel (see \cite{Hough2009ZerosGAF}, \cite{ZerosGaussianPowerSeries}). DPPs also appear and are used in the study of a vide variety of different mathematical problems, such as self-avoiding walks, random spanning trees or random integer partitions, see \cite{Pemantle}, \cite{Meliot2021}, \cite{Tao2024}. More recently, some peers attempted to apply them to machine learning \cite{DeterminantalML2013}, and to model phenomena arising in the field of networking \cite{Miyoshi2014}, \cite{TorrisiLeonardi2014}, \cite{Vergne2014}. The fact that these processes exhibit repulsion between particles is the core property that makes them very fitting for many applications.
+
+The two aforementionned kernels, respectively Bergman and Ginibre kernels, benefit from several interesting properties. While the former, taking its values in the unit disc of the complex plane, is invariant with respect to rotations, the latter, which is valued in the whole complex plane, is invariant with respect to rotations and translations. Whether it be for quantum mechanics, machine learning or networking modelling, for pratical uses it is necessary to benefit from a pratical simulation algorithm. This work has been initiated in \cite{Hough2006} wherein the authors give a practical algorithm for the simulation of DPPs. The simulation procedure which is hinted in \cite{Ginibre1965} was fully developed in \cite{Caer1990}.
+
+The main problem of these algorithms is that, strictly speaking, they unfeasible due to the fact that the point processes involved exhibit an infinite number of points almost surely, and that, in the case of the Ginibre kernel, the points scatter throughout the whole plane. In \cite{DecreusefondMoroz2021}, the authors construct restricted and trucated variants of the Ginibre point process, that allow simulation to become closer to feasible. More precisely, the Ginibre point process is therein restricted onto a ball of arbitrary radius and centered at the origin. The number of points then becomes almost surely finite. However, the stochastic dynamics of DPPs implies that computing the number of points that the point process requires to simulate a countable infinity of Bernoulli random variables, which is still unfeasible. The only option left is then to truncate the DPPs to a fixed (and finite) number of points, and brush off the remaining ones. But then, is it possible to quantify the approximation error that comes inevitably with this method ? To what extent is this new probability measure close
+to the original one ? Theoretical results were shown in \cite{DecreusefondMoroz2021}, providing answers to this question. For instance, the authors have shown that denoting $\mathfrak S^R $ and $ \mathfrak S^R_N $ the Ginibre DPP restricted to a ball of radius $R$ centered at the origin of the complex plane and its truncation to $N$ points respectively, then truncating this DPP to $N_R = (R + c)^2 $ yields for all $ c > 0 $ \begin{equation} \mathcal W_{KR} (\mathfrak S^R, \mathfrak S^R_N ) \leqslant \sqrt{\frac 2 \pi } R e^{-c^2} \end{equation} whenever $ R > c$, where $ \mathcal W_{KR} $ 
+denotes the Kantorovitch-Rubinstein (or Wassertein-1) distance on the set of probability measures on the set of configurations on $\mathbf C$. This results shows that the (Wasserstein) distance between the two probability measures is exponentially small in $c^2$ $ N_R = (R+c)^2 $ deviates from $ R^2 $,, and implies that the two DPPs $ \mathfrak S^R $ and $ \mathfrak S^R_{N_R} $ coincide with high probability. As a result, truncating to $R^2$ points looks like a very good choice. 
+
+This is all very nice and convenient, but only applies to one DPP law, the Ginibre DPP. In this paper, we extend this work, by constructing restricted (onto balls of radius $R$) and restricted-trucated versions of the Bergman DPP, which will henceforth be at the very core of our study. We find the compromise as to the right number of points depending on the chosen radius $R$ to truncate our restricted DPP and provide the theoretical results that ensure that the use of the simulation algorithm presented in \cite{DecreusefondMoroz2021} produces a result that is not blatantly far from the (theoretical and nonfeasible) simulation of the restricted Bergman DPP. In other words, the truncation error is small when choosing the right number of points, hence providing an answer to the fifth open question asked in \cite{Decreusefond2016} for this DPP. We also provide some general results for DPPs that are not specific to the Bergman kernel.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bergman.png} % replace with your first image filename
+        \caption{Simulation of the Bergman DPP restricted to a radius of 0.9995, using \cite{MorozSoftware}. Number of points : 985.}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{bergman_zoom.png} % replace with your second image filename
+        \caption{A zoom on the boundary of the simulation on the left.}
+    \end{minipage}
+\end{figure}
+
+\section{Determinantal Point Processes}
+
+Let $E$ be a Polish space, equipped with the Borel $\sigma$-algebra generated by the open subsets of $E$. In the sequel, $\lambda$ is a reference Radon measure on this measurable space. Denote $\mathcal{N}$ the space of locally finite subsets in $E$, also called the configuration space:
+\[
+\mathfrak{N} = \left\{ \xi \subset E \mid \forall \Lambda \subset E \text{ compact},\, |\Lambda \cap \xi| < \infty \right\}.
+\]
+It is equipped with the topology of vague convergence (also called weak topology), which is the weakest topology such that for all continuous and compactly supported functions $f$ on $E$, the mapping
+\[
+\xi \mapsto \langle f, \xi \rangle := \sum_{x \in \xi} f(x)
+\]
+is continuous. Elements of $\mathfrak{N}$, i.e., locally finite configurations on $E$, are identified with atomic Radon measures on $E$.
+
+Next, considering a compact subset $\Lambda \subset E$, we may consider the set $\mathcal{N}_\Lambda = \{\xi \subset \Lambda,\, |\xi| < \infty\}$ of finite configurations on $\Lambda$, equipped with the trace $\sigma$-algebra.
+
+A point process is then any random variable valued in $\mathcal{N}$.
+
+\textbf{Definition \cnt.} Let $\eta$ be a point process on $E$. For $n \geq 1$, the $n$-th factorial moment of $\eta$ is the point process defined on $E^n$ as the set of $n$-tuples of points of $\eta$ : $$ M_\eta^n = \{(x_1, \dots, x_n) \mid x_1, \dots, x_n \in \eta\}. $$
+
+
+\textbf{Definition \cnt.}
+The $n$-th factorial moment measure of $\eta$ is the measure defined by
+\[
+\mu_\eta^n(B_1 \times \dots \times B_n) = \mathbb{E}(M_\eta^n(B_1 \times \dots \times B_n)),
+\]
+where $B_1, \dots, B_n$ are measurable subsets of $E$.
+
+
+\textbf{Definition :}
+If $\mu_\eta^n$ admits a Radon-Nikodym derivative $\rho_n$ with respect to $\lambda^{\otimes n}$, the latter is called the $n$-th correlation function of $\mu$. That is, assuming existence,
+\[
+\rho_n(x_1, \dots, x_n) = \frac{d\mu_\eta^n}{d\lambda^{\otimes n}}(x_1, \dots, x_n).
+\]
+
+
+Equivalently, a point process $\eta$ is said to have correlation functions $(\rho_n)_{n \geq 1}$ if for all disjoint bounded Borel subsets $A_1, \dots, A_n$ of $E$, we have
+\[
+\mathbb{E} \left[ \prod_{k=1}^{n} \xi(A_k) \right] = \int_{A_1 \times \dots \times A_n} \rho_n(x_1, \dots, x_n) \, d\lambda^{\otimes n}.
+\]
+
+Correlation functions are symmetric and characterize the process. $\rho_1$ is interpreted as the average density of particles with respect to $\lambda$. More generally,
+\[
+\rho(x_1, \dots, x_n) \, d\lambda(x_1) \dots d\lambda(x_n)
+\]
+represents the probability of having a point in each neighborhood $dx_k$ of $x_k$.
+
+Let $\Lambda \subset E$ be a compact set. Denote by $L^2(\Lambda, \lambda)$ the Hilbert space of complex-valued square-integrable functions with respect to the restriction of $\lambda$ to $\Lambda$, with the usual inner product. An integral operator $K : L^2(E, \lambda) \to L^2(E, \lambda)$ has kernel $k : E^2 \to \mathbb{C}$ if it is given by
+\[
+Kf(x) = \int k(x, y)f(y) \, d\lambda(y).
+\]
+If $k \in L^2(E^2, \lambda^{\otimes 2})$, then $K$ is a bounded linear operator.
+
+\textbf{Definition :}
+Let $\Lambda \subset E$ be compact. The restriction $K_\Lambda$ of the integral operator $K$ to $\Lambda$ is defined by
+\[
+K_\Lambda f(x) = \int_\Lambda k(x, y)f(y) \, d\lambda(y), \quad f \in L^2(\Lambda, \lambda).
+\]
+Then $K_\Lambda$ is a compact operator.
+
+
+\textbf{Definition :}
+The operator $K$ is said to be Hermitian or self-adjoint if $k(x, y) = \overline{k(y, x)}$ for $\lambda^{\otimes 2}$-almost every $(x, y) \in E^2$.
+
+
+If $K_\Lambda$ is self-adjoint, by the spectral theorem, $L^2(\Lambda, \lambda)$ has an orthonormal basis $(\varphi_j^\Lambda)_{j \geq 0}$ of eigenfunctions of $K_\Lambda$, with eigenvalues $(\lambda_j^\Lambda)_{j \geq 0}$, where only $0$ may accumulate. Then, by Mercer's theorem,
+\[
+k_\Lambda(x, y) = \sum_{n \geq 0} \lambda_n^\Lambda \varphi_n^\Lambda(x) \varphi_n^\Lambda(y).
+\]
+
+$K$ is called:
+- \emph{positive} if its spectrum lies in $\mathbb{R}_+$;
+- \emph{trace-class} if $\sum_{n=1}^\infty |\lambda_n| < \infty$.
+
+\textbf{Definition :}
+If $K_\Lambda$ is of trace class for all compact $\Lambda$, then $K$ is said to be locally trace class.
+
+
+\textbf{Hypothesis \cnt.}
+Throughout this paper, all kernels are self-adjoint, locally trace-class, with spectrum in $[0, 1]$.
+
+\textbf{Definition :}
+A locally finite and simple point process on $E$ is a determinantal point process (DPP) if its correlation functions with respect to $\lambda$ exist and are of the form
+\[
+\rho_n(x_1, \dots, x_n) = \det(k(x_i, x_j))_{1 \leq i,j \leq n},
+\]
+where $k$ satisfies the above hypothesis.
+
+
+\textbf{Theorem \cnt.}
+Let $k(x, y) = \sum_{k=1}^n \lambda_k \varphi_k(x)\varphi_k(y)$ be the Mercer decomposition of the DPP kernel. The $\lambda_k$ are in $(0,1]$, and the $\varphi_k$ form a Hilbert basis of $L^2(E, \lambda)$. Let $(B_k)_{1 \leq k \leq n}$ be independent Bernoulli random variables with parameters $\lambda_k$, and define the random kernel
+\[
+k_B(x, y) = \sum_{k=1}^n B_k \varphi_k(x)\varphi_k(y).
+\]
+Then the point process $\eta_B$ defined by $k_B$ has the same law as the original DPP:
+\[
+k \stackrel{\text{Law}}{=} k_B.
+\]
+
+
+\textbf{Corollary \cnt.}
+If $n$ is finite, then the point process has a finite number of points almost surely. The number of points is almost surely finite if and only if $K$ is trace-class. Since we consider only locally trace-class operators, the restriction of any DPP to a compact set has almost surely finitely many points.
+
+
+\textbf{Definition :}
+The \textbf{Bergman DPP} is the DPP on the open unit disc centered at the origin in $\mathbb{C}$ with kernel
+\[
+k(x, y) = \frac{1}{\pi(1 - x\overline{y})^2}.
+\]
+
+
+
+\section{Determinantal point processes two}
+
+$$
+\mathcal{N} = \{\xi \subset E, \forall \Lambda \subset E \text{ compact}, |\Lambda \cap \xi| < \infty \}
+$$
+
+$$
+\langle f, \xi \rangle := \sum_{x \in \xi} f(x)
+$$
+
+$$
+\mu_n^\eta(B_1 \times \cdots \times B_n) = \mathbb{E}[M^\eta_n(B_1 \times \cdots \times B_n)]
+$$
+
+$$
+\rho_n(x_1, ..., x_n) = \frac{d\mu_n^\eta}{d\lambda^{\otimes n}}(x_1, ..., x_n)
+$$
+
+$$
+\mathbb{E}\left[ \prod_{k=1}^n \xi(A_k) \right] = \int_{A_1 \times \cdots \times A_n} \rho_n(x_1, ..., x_n) \, d\lambda^{\otimes n}
+$$
+
+$$
+Kf(x) = \int k(x, y) f(y) \, d\lambda(y)
+$$
+
+$$
+k_\Lambda(x, y) = \sum_{n \geq 0} \lambda^\Lambda_n \varphi^\Lambda_n(x) \varphi^\Lambda_n(y)
+$$
+
+$$
+\rho_n(x_1, ..., x_n) = \det(k(x_i, x_j))_{1 \leq i,j \leq n}
+$$
+
+$$
+k(x, y) = \sum_{k=1}^n \lambda_k \varphi_k(x) \varphi_k(y)
+$$
+
+$$
+k^B(x, y) = \sum_{k=1}^n B_k \varphi_k(x) \varphi_k(y)
+$$
+
+$$
+k(x, y) = \frac{1}{\pi (1 - x y)^2}
+$$
+
+$$
+k_\Lambda^N(x, y) = \sum_{k=0}^{N-1} \lambda^\Lambda_k \varphi^\Lambda_k(x) \varphi^\Lambda_k(y)
+$$
+
+\section{The Bergman DPP on a disc}
+
+$$
+\lambda_k^R = R^{2k + 2}
+$$
+
+$$
+\varphi_k^R(x) = \sqrt{\frac{k + 1}{\pi}} \cdot \frac{1}{R^{k+1}} x^k
+$$
+
+$$
+W_{KR}(\mathbb{S}_R, \mathbb{S}_{\beta N_R}) \leq N_R e^{-2\beta g(R)}
+$$
+
+$$
+N_R = \sum_{n=0}^{\infty} R^{2n + 2} = \frac{R^2}{(1 - R)(1 + R)}
+$$
+
+$$
+g(R) = \frac{R^2}{1 + R}
+$$
+
+$$
+\mathbb{P}(\mathbb{S}_R \neq \mathbb{S}_{\beta N_R}) \leq N_R e^{-2\beta \cdot \frac{R^2}{1+R}}
+$$
+
+$$
+\lambda_n^R = \frac{\gamma(n + 1, R^2)}{n!}, \quad \mathbb{E}[|\mathbb{S}^G_R|] = \sum_{n=0}^{\infty} \lambda_n^R = R^2
+$$
+
+\section{The Bergman DPP on other regions}
+
+$$
+\left| X_k \right| \overset{\text{law}}{=} U_k^{1/(2k)} \quad \text{where } U_k \sim \mathcal{U}[0,1]
+$$
+
+$$
+\mathbb{P}(m \leq x) = 1 - \prod_{k=1}^n (1 - x^{2k})
+$$
+
+$$
+\lambda_k^{r,R} = R^{2k + 2} - r^{2k + 2}
+$$
+
+
+
+
+$$
+\varphi_k^{r,R}(x) = \sqrt{ \frac{k + 1}{\pi (R^{2k + 2} - r^{2k + 2})} } x^k
+$$
+
+\section{General results}
+
+$$
+\mathbb{P}(|S| \leq (1 \pm c) N_R) \leq \exp\left( -N_R \left( -2c + \frac{3c^2}{2} - \frac{c^3}{2} \right) \right)
+$$
+
+$$
+\frac{|S_n| - \mathbb{E}[|S_n|]}{\sqrt{n}} \xrightarrow{d} \mathcal{N}(0, \sigma_n^2)
+$$
+
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{Article}
+
+\end{document}

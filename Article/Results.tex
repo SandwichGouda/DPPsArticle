@@ -1,0 +1,169 @@
+\documentclass[11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+\usepackage{parskip}
+\usepackage{geometry}
+
+\usepackage{titling}
+
+\usepackage{comment}
+
+\usepackage{cite}
+
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+\usepackage{svg}
+
+\newcommand{\itm}{$\triangleright$} % Caractère à placer en début des listes
+\newcommand{\q}{\large \textbf{Question :} \quad}
+\renewcommand{\r}{\normalsize \bigskip \bigskip}
+\newcommand{\n}{\large \textbf{Note :} \quad}
+\newcommand{\rem}{\large \textbf{Remarque :} \quad}
+\newcommand{\fact}{\bigskip \bigskip}
+
+\renewcommand\thesection{\Roman{section}}
+
+\renewcommand{\labelenumi}{\theenumi)}
+\renewcommand{\labelenumii}{\theenumii)}
+\renewcommand{\labelenumiii}{\theenumiii)}
+
+\let\oldsum\sum
+\renewcommand{\sum}{\oldsum\limits}
+
+% \pagenumbering{gobble}
+
+% \UseRawInputEncoding
+
+\begin{document}
+
+\newgeometry{left = 1in, right = 1in, top = 1in}
+
+% \title{\textbf{Optimal transport for the simulation of the Bergman determinantal point process}}
+% \author{William DRIOT, Laurent DECREUSEFOND $ {}^\dagger$ }
+% \date{}
+
+% \maketitle
+
+\textbf{1) Une remarque préliminaire}
+
+Dans l'article de Moroz et Decreusefond, on indique qu'il faut prendre en gros $R^2$ points quand on projette le Ginibre à un rayon $R$.
+
+Plus précisément, il est dit que : \og it is a well known observation that the number of points is about $R^2$ \fg. Dit comme ça, ça sonne très empirique. 
+
+Or il se trouve que l'on peut prévoir ce résultat théoriquement : $ R^2 $ n'est rien d'autre que le nombre moyen de points qui sortira lors de la simulation du Ginibre (projeté à un rayon $R$). 
+
+La dernière fois, je vous avais dit que je savais démontrer ce fait. Vous m'avez dit que : c'est facile, ça doit pouvoir se retrouver très rapidement, personne ne l'écrit parce que c'est "trop évident".
+
+Personnellement je ne trouve pas ce fait si évident que ça, et pour cette raison je trouve qu'il serait pertinent de le dire et de l'écrire. Parce que je ne trouve pas que le calcul soit forcément immédiat, parce qu'il n'est écrit nulle part, et parce que cela guide les résultats suivants : on majore par la suite la déviation du Bergman autour de sa moyenne. Cela suggère en plus que pour tronquer d'autres DPP, il faut à nouveau tronquer à la moyenne du nombre de points. Je trouve ce point de vue intéressant et cette justification digne d'être écrite. Pour les raisons précédentes, pour insister sur ce point de vue et pour la suggestion aux éventuelles personnes futures \footnote{certes probablement fictives..} qui s'intéresseront aux projections et troncations de DPPs en vue de leur simulations.
+
+TL;DR : J'aimerais écrire cette proposition, la démontrer et écrire en dessous les commentaires précédents. Êtes-vous OK avec ça ?
+
+Si non : si vous trouvez que la preuve du nombre moyen de points pour le Ginibre projeté à $R$ est trop facile, et que tout ce qui précède ne mérite pas d'être dit, je veux bien que vous me disiez en combien de temps vous parvenez à le retrouver. Je suppose que si 5min vous suffisent, j'aurai tort. Sinon, trouve que ça vaut le coup.
+
+\textbf{2) Le bergman projeté, et sa version tronquée}
+
+Les valeurs propres du Bergman projeté au disque de rayon $R$ sont les $$ \lambda_k = R^{2k + 2} $$ et les fonctions propres sont les $$ \phi_k : x \mapsto x^k \sqrt{ \frac{k+1}{\pi}} $$ 
+
+On note $ \mathfrak S^R $ ce Bergman projeté et $ \mathfrak S^R_{N} $ sa version tronquée à $ N $ points.
+
+En vertu des remarques précédentes, on tronquera le Bergman $ \mathfrak S^R $ à $ N_R = \mathbf E ( |\mathfrak S^R| ) $ points.
+
+On a $$ N_R = \sum_{n=0}^\infty R^{2n+ 2} = \frac{R^2}{(1-R)(1+R)}$$
+
+\newpage
+
+\textbf{3) Upper bound}
+
+On considère la troncation à $ \beta N_R $ points. On a alors
+
+$$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{\beta N} ) \leqslant N_R e^{-2 \beta g(R)} $$
+
+où $$ g(R) = \frac{R^2}{1+R} $$ 
+
+\textit{Proof.}
+
+En prenant le couplage $ (\xi^R_{ \beta N_R}, \xi^R) $ tel que le premier soit un le sous-ensemble du second constitué des points correspondants aux indices $ n \leqslant \beta N_R$ dans la décomposition de Mercer, on a :
+
+$$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{\beta N_R} ) \leqslant \sum_{k= \beta N_R + 1 }^\infty R^{2k + 2} $$
+
+Travaillons plutôt avec $ \varepsilon = 1 - R $ 
+
+$$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{\beta N_R} ) \leqslant \frac{(1-\varepsilon)^2}{\varepsilon (2- \varepsilon)} (1-\varepsilon)^{2 \beta N_R} $$
+
+$$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{\beta N_R} ) \leqslant \frac{(1-\varepsilon)^2}{\varepsilon (2- \varepsilon)} e^{2 \beta N_R \log (1-\varepsilon)} $$
+
+$$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{\beta N_R} ) \leqslant \frac{(1-\varepsilon)^2}{\varepsilon (2- \varepsilon)} \exp \left( 2 \beta \frac{(1-\varepsilon)^2}{\varepsilon (2-\varepsilon)} \log (1-\varepsilon) \right) $$
+
+$$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{\beta N_R} ) \leqslant \frac{(1-\varepsilon)^2}{\varepsilon (2- \varepsilon)} \exp \left( - 2 \beta \frac{(1-\varepsilon)^2}{ 2-\varepsilon } \right) $$
+
+\textbf{Commentaires :}
+
+\begin{itemize}
+
+  \item Le $ \frac 1 \varepsilon $ fait tendre la borne vers $+\infty $ quand $ \varepsilon \to 0 $. C'est normal. C'est analogue au facteur $ R $ dans la borne $$ \mathcal W_{KR}(\mathfrak S^R, \mathfrak S^R_{(R+c)^2} ) \leqslant \sqrt \frac{2}{\pi} R e^{-c^2  }$$ pour le Ginibre dans le Decreusefond-Moroz : la borne $\xrightarrow[R \to \infty]{} \infty $
+
+  \newpage
+
+  \item Le comportement de la fraction rationnelle $$\frac{(1-\varepsilon)^2}{ 2-\varepsilon } = \frac{R^2}{1+R} $$ dans l'exponentielle est d'être gentiment bornée au voisinnage de $ \varepsilon \to 0 \: / \: R \to 1 $. Autrement dit, la borne est bien exponentielle en $ \beta $.
+
+  Par exemple, pour $ R \in [0.9,1] $, $g(R) = \frac{R^2}{1+R} \geqslant 0.42 $ donc on a $ \leqslant ... \exp \left( - 0.98 \beta \right) $. 
+
+  Pour $ R \in [0.99,1] $, $g(R) \geqslant 0.493 $ donc on a $ \leqslant ... \exp \left( - 0.986 \beta \right) $, etc. 
+  
+  $g(R)$ étant continue et s'annulant en 0, on ne peut pas la minorer sur $[0,1]$ par une constante $ K_0 > 0 $. C'est pour ça qu'on est \og obligés \fg \: de considérer des sous-intervalles auxquels 0 n'adhère pas et de l'y minorer.
+  
+\end{itemize}
+
+\textbf{4) Lower bound}
+
+Pour rappel le but est d'obtenir des majorations, si possibles fortes, des quantités $ \mathbf P(| \mathfrak S^R_{N_R} | < \alpha ) $ où $ \alpha $ se promène cette-fois ci en dessous de $N_R$, ce qui donne une justification théorique au fait que le nombre de points ne dévie que peu de $ N_R $. 
+
+On a, pour $c \in ]0,1[ $ $$ \mathbf P( | \mathfrak S_{N_R}^R | \leqslant (1-c) N_R ) \leqslant e^{-N_R(-2c + 3c^2/2 - c^3/2)} $$
+
+Il faut juste retravailler un peu ce petit polynôme en $c$ et raffiner la majoration pour qu'elle soit un peu plus claire. Je le ferai un peu plus tard.
+
+\textit{Proof.} 
+
+La méthode est très différente de celle utilisée dans le Decreusefond-Moroz.
+
+On note $ B_n $ la $n$-ème variable aléatoire de Bernoulli d'intérêt, de sorte que $ B_n \sim \mathrm{Ber}(\lambda_n) = \mathrm{Ber}(R^{2n + 2}) $. 
+
+On a  $ | \mathfrak S_{N_R}^R | = \sum_{n=0}^\infty B_n $. On note $ S = \sum_{n=0}^\infty B_n $ pour simplifier les notations. On a :
+
+$$ \mathbf P(| \mathfrak S_{N_R}^R | \leqslant (1-c)N_R ) 
+= \mathbf P( S \leqslant (1-c)N_R ) 
+= \mathbf P\left[ \left( \frac{1}{1-c} \right)^S \leqslant \left( \frac{1}{1-c} \right)^{(1-c)N_R} \right] $$
+
+$$ = \mathbf P\left[ (1-c)^{(1-c)N_R} \leqslant (1-c)^{S} \right] \leqslant (1-c)^{-(1-c)N_R} \mathbf E[(1-c)^{S} ] $$
+
+$$ = e^{\displaystyle -(1-c)N_R \log(1-c) }  \mathbf E\left[ e^{ \log (1-c) \sum\limits_{n=0}^\infty B_n } \right] = e^{\displaystyle -(1-c)N_R \log(1-c) } \prod_{n=0}^\infty \mathbf E[ e^{ \log (1-c) B_n } ] $$
+
+$$ = e^{\displaystyle -(1-c)N_R \log(1-c) } \prod_{n=0}^\infty (1-R^{2n+2} + R^{2n+2}(1-c)) = e^{\displaystyle -(1-c)N_R \log(1-c) } \prod_{n=0}^\infty (1-cR^{2n+2}) $$ 
+
+$$ \leqslant e^{\displaystyle -(1-c)N_R \log(1-c) } \prod_{n=0}^\infty e^{-cR^{2n+2}} = e^{\displaystyle -(1-c)N_R \log(1-c) } e^{-c \sum_{n=0}^\infty R^{2n+2}}$$
+
+$$ = e^{\displaystyle -(1-c)N_R \log(1-c) -c N_R}  = e^{\displaystyle  N_R ( - c-(1-c) \log(1-c) )} $$
+
+$$ \leqslant e^{\displaystyle  N_R ( - c- (1-c)(c-c^2/2))} = e^{\displaystyle  N_R ( -2c + 3c^2/2 - c^3/2)} $$
+
+\textbf{5) Remarque finale} 
+
+Dans ce qui précède il faudrait réécrire les choses en prenant en compte le fait que $ N_R $ est censé être un entier. Bref il faut juste un peu tout modifier en ajoutant des parties entières. Ça ne devrait pas poser de problème.
+
+\end{document}
