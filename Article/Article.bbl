@@ -1,0 +1,141 @@
+\begin{thebibliography}{10}
+
+\bibitem{Burton1993}
+Robert Burton and Robin Pemantle.
+\newblock Local characteristics, entropy and limit theorems for spanning trees
+  and domino tilings via transfer-impedances.
+\newblock {\em The Annals of Probability}, pages 1329--1371, 1993.
+
+\bibitem{ConwayOpTheory2000}
+JB~Conway.
+\newblock A course in operator theory.
+\newblock {\em American Mathematical Society}, 2000.
+
+\bibitem{ConwayFunctAnalysis2019}
+John~B Conway.
+\newblock {\em A course in functional analysis}, volume~96.
+\newblock Springer, 2019.
+
+\bibitem{PPIntro2003}
+D.~J. Daley and D.~Vere-Jones.
+\newblock {\em An Introduction to the Theory of Point Processes}, volume~1.
+\newblock Springer, 2 edition, 2003.
+
+\bibitem{Decreusefond2016}
+Laurent Decreusefond, Ian Flint, Nicolas Privault, and Giovanni~Luca Torrisi.
+\newblock Determinantal point processes.
+\newblock In {\em Stochastic analysis for poisson point processes: Malliavin
+  calculus, wiener-It{\^o} chaos expansions and stochastic geometry}, pages
+  311--342. Springer, 2016.
+
+\bibitem{DecreusefondVergne2015}
+Laurent Decreusefond, Ian Flint, and Anais Vergne.
+\newblock Efficient simulation of the ginibre point process.
+\newblock {\em Journal of Applied Probability}, 52(4):1003--1012, 2015.
+
+\bibitem{DecreusefondMoroz2021}
+Laurent Decreusefond and Guillaume Moroz.
+\newblock Optimal transport between determinantal point processes and
+  application to fast simulation.
+\newblock {\em Modern Stochastics: Theory and Applications}, 8(2):209--237,
+  2021.
+
+\bibitem{Ginibre1965}
+Jean Ginibre.
+\newblock Statistical ensembles of complex, quaternion, and real matrices.
+\newblock {\em Journal of Mathematical Physics}, 6(3):440--449, 1965.
+
+\bibitem{Hough2006}
+J.~Ben Hough, Manjunath Krishnapur, Yuval Peres, and B{\'a}lint Vir{\'a}g.
+\newblock Determinantal processes and independence.
+\newblock {\em Probability Surveys}, Vol. 3:206--229, 2006.
+
+\bibitem{Hough2009ZerosGAF}
+John~Ben Hough, Manjunath Krishnapur, Yuval Peres, et~al.
+\newblock {\em Zeros of Gaussian analytic functions and determinantal point
+  processes}, volume~51.
+\newblock American Mathematical Soc., 2009.
+
+\bibitem{Caer1990}
+G~Le~Ca{\"e}r and JS~Ho.
+\newblock The voronoi tessellation generated from eigenvalues of complex random
+  matrices.
+\newblock {\em Journal of Physics A: Mathematical and General}, 23(14):3279,
+  1990.
+
+\bibitem{Macchi1975}
+Odile Macchi.
+\newblock The coincidence approach to stochastic point processes.
+\newblock {\em Advances in Applied Probability}, 7(1):83--122, 1975.
+
+\bibitem{Miyoshi2014}
+Naoto Miyoshi and Tomoyuki Shirai.
+\newblock A cellular network model with ginibre configured base stations.
+\newblock {\em Advances in Applied Probability}, 46(3):832--845, 2014.
+
+\bibitem{MorozSoftware}
+G.~Moroz.
+\newblock Determinantal point process.
+\newblock \url{https://gitlab.inria.fr/gmoro/point_process}, 2020.
+\newblock Software, doi:10.5281/zenodo.4088585.
+
+\bibitem{Meliot2021}
+Pierre-Loïc Méliot.
+\newblock Determinantal point processes and applications, 2021.
+
+\bibitem{ZerosGaussianPowerSeries}
+Yuval Peres and B{\'a}lint Vir{\'a}g.
+\newblock Zeros of the iid gaussian power series: a conformally invariant
+  determinantal process.
+\newblock {\em Acta Mathematica}, 194(1):1--35, 2005.
+
+\bibitem{ShiraiTakahashi2003}
+Tomoyuki Shirai and Yoichiro Takahashi.
+\newblock Random point fields associated with certain fredholm determinants ii:
+  fermion shifts and their ergodic and gibbs properties.
+\newblock {\em The Annals of Probability}, 31(3):1533--1564, 2003.
+
+\bibitem{Soshnikov2000}
+Alexander Soshnikov.
+\newblock Determinantal random point fields.
+\newblock {\em Russian Mathematical Surveys}, 55(5):923, 2000.
+
+\bibitem{Tamura2006}
+Hiroshi Tamura and Keiichi~R Ito.
+\newblock A canonical ensemble approach to the fermion/boson random point
+  processes and its applications.
+\newblock {\em Communications in mathematical physics}, 263:353--380, 2006.
+
+\bibitem{Tao2024}
+Terence Tao.
+\newblock On the distribution of eigenvalues of gue and its minors at fixed
+  index.
+\newblock {\em arXiv:2412.10889}, 2024.
+
+\bibitem{DeterminantalML2013}
+Alex Taskar and Ben Kulesza.
+\newblock Determinantal point processes for machine learning.
+\newblock {\em Foundations and Trends in Machine Learning}, 5(2-3):123--286,
+  2013.
+
+\bibitem{TorrisiLeonardi2014}
+Giovanni~Luca Torrisi and Emilio Leonardi.
+\newblock Large deviations of the interference in the ginibre network model.
+\newblock {\em Stochastic Systems}, 4(1):173--205, 2014.
+
+\bibitem{Vergne2014}
+Ana{\"\i}s Vergne, Ian Flint, Laurent Decreusefond, and Philippe Martins.
+\newblock Disaster recovery in wireless networks: A homology-based algorithm.
+\newblock {\em IEEE}, pages 226--230, 2014.
+
+\bibitem{Villani2021}
+C{\'e}dric Villani.
+\newblock {\em Topics in optimal transportation}, volume~58.
+\newblock American Mathematical Soc., 2021.
+
+\bibitem{Villani2009}
+C{\'e}dric Villani et~al.
+\newblock {\em Optimal transport: old and new}, volume 338.
+\newblock Springer, 2009.
+
+\end{thebibliography}
