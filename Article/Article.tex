@@ -72,14 +72,14 @@ The two aforementionned kernels, respectively Bergman and Ginibre kernels, benef
 
 The main problem of these algorithms is that, strictly speaking, they unfeasible due to the fact that the point processes involved exhibit an infinite number of points almost surely, and that, in the case of the Ginibre kernel, the points scatter throughout the whole plane. In \cite{DecreusefondMoroz2021}, the authors construct restricted and trucated variants of the Ginibre point process, that allow simulation to become closer to feasible. More precisely, the Ginibre point process is therein restricted onto a ball of arbitrary radius and centered at the origin. The number of points then becomes almost surely finite. However, the stochastic dynamics of DPPs implies that computing the total number of points in the process requires to simulate a countable infinity of Bernoulli random variables, which is still unfeasible. The only option left is then to truncate the DPPs to a fixed (and finite) number of points, and brush off the remaining ones. But then, is it possible to quantify the approximation error that inevitably comes with this method ? To what extent is this new probability measure close
 to the original one ? Theoretical results were shown in \cite{DecreusefondMoroz2021}, providing answers to this question. For instance, the authors have shown that denoting $\mathfrak S^R $ and $ \mathfrak S^R_N $ the Ginibre DPP restricted to a ball of radius $R$ centered at the origin of the complex plane and its truncation to $N$ eigenvalues respectively, then truncating this DPP to $N_R = (R + c)^2 $ yields, for all $ c > 0 $,
-\begin{equation} 
+\begin{equation}\label{eq:main-result-ginibre}
     \mathcal W_{KR} (\mathfrak S^R, \mathfrak S^R_N ) \leqslant \sqrt{\frac 2 \pi } R e^{-c^2} 
 \end{equation}
-whenever $ R > c$, where $ \mathcal W_{KR} $ denotes the Kantorovitch-Rubinstein (or Wassertein-1) distance on the set of probability measures on the set of configurations on $\mathbf C$. This results shows that the (Wasserstein) distance between the two probability measures is exponentially small in $c^2$ as the number $ N_R = (R+c)^2 $ \textit{deviates} from $ R^2 $, and implies that the two DPPs $ \mathfrak S^R $ and $ \mathfrak S^R_{N_R} $ coincide with high probability. As a result, truncating to $R^2$ points looks like a very good choice. 
+whenever $ R > c$, where $ \mathcal W_{KR} $ denotes the Kantorovitch-Rubinstein (or Wassertein-1) distance on the set of probability measures on the set of configurations on $\mathbf C$. This results shows that the (Wasserstein) distance between the two probability measures is exponentially small in $c^2$ as the number $ N_R = (R+c)^2 $ \textit{deviates} from $ R^2 $, and implies that the two DPPs $ \mathfrak S^R $ and $ \mathfrak S^R_{N_R} $ coincide with high probability. As a result, truncating to $R^2$ points looks like a very good choice, and this is why it is what they suggested (and implemented in \cite{MorozSoftware}). 
 
 This is all very nice and convenient, but only applies to one DPP law, the Ginibre DPP. In this paper, we extend this work, by constructing restricted and restricted-trucated versions of the Bergman DPP, which will henceforth be at the very core of our study. We find a good compromise as to the right number of points depending on the chosen radius $R$ to truncate our restricted DPP and provide the theoretical results that ensure that the use of the simulation algorithm presented in \cite{DecreusefondMoroz2021} produces a result that is not blatantly far from the (theoretical and nonfeasible) simulation of the restricted Bergman DPP. In other words, the truncation error is small when choosing the right number of points, hence providing an answer to the fifth open question asked in \cite{Decreusefond2016} for this DPP. We also provide some general results for DPPs that are not specific to the Bergman kernel.
 
-\begin{figure}[h] \label{fig:main-fig}
+\begin{figure}[h]\label{fig:main-fig}
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
@@ -166,7 +166,7 @@ Recall that $K$ is positive if its spectrum is included in $\mathbb{R}^+$, and i
     If $K^\Lambda$ is of trace-class for all compacts $\Lambda$, $K$ is said to be locally trace-class.
 \end{definition}
 
-\begin{hypothesis} \label{hyp:mainhypothesis}
+\begin{hypothesis}\label{hyp:main-hypothesis}
     Throughout this paper, our kernels will be self-adjoint, locally trace class, with spectrum contained in $[0, 1]$.
 \end{hypothesis}
 
@@ -176,12 +176,12 @@ We refer to \cite{ConwayOpTheory2000} and \cite{ConwayFunctAnalysis2019} for fur
     A locally finite and simple point process on $E$ is a determinantal point process if its correlation functions with respect to the reference Radon measure $\lambda$ on $E$ exist and are of the form
     \[
         \rho_n(x_1, \dots, x_n) = \det(k(x_i, x_j))_{1 \le i,j \le n},
-    \] where $k$ satisfies Hypothesis~\ref{hyp:mainhypothesis}.
+    \] where $k$ satisfies Hypothesis~\ref{hyp:main-hypothesis}.
 \end{definition}
 
 The dynamics of DPPs are described by the following fundamental theorem.
 
-\begin{theorem} \label{thm:main-dpp-thm}
+\begin{theorem}\label{thm:main-dpp-thm}
 Under Hypothesis~\ref{hyp:main-hypothesis}, consider Mercer's decomposition of the kernel $k$ of the determinantal point process $\eta$:
 \[
 k(x,y) = \sum_{k=1}^n \lambda_k \phi_k(x) \overline{\phi_k(y)}.
@@ -313,12 +313,12 @@ We refer to \cite{Villani2021} and \cite{Villani2009} for proper introductions t
 It is a distance on the set of point process laws. See [5] for a thorough study of Wasserstein distances on configuration spaces. The following result exhibits a good compromise as to the number of points the Bergman ought to be truncated to.
 \end{definition}
 
-\begin{theorem} \label{thm:main-analog}
+\begin{theorem}\label{thm:main-analog}
 Let
 \[
 N_R := \sum_{n=0}^\infty R^{2n+2} = \frac{R^2}{(1-R)(1+R)}.
 \]
-Denote $\mathfrak{S}^R$ the law of the restricted Bergman to a compact ball of radius $R$ centered at 0 and $\mathfrak{S}_\alpha^R$ the law of its truncation to $N$ eigenvalues.
+Denote $\mathfrak{S}^R$ the law of the restricted Bergman to a compact ball of radius $R$ centered at 0 and $\mathfrak{S}_\alpha^R$ the law of its truncation to $\alpha$ eigenvalues.
 
 If we truncate it to $\beta N_R$ eigenvalues, we have
 \begin{equation}
@@ -350,22 +350,23 @@ The proof is complete.
     As a corollary of the previous proof, the two point processes coincide with high probability. The previous proof shows that :
 \end{remark}
 
-\begin{proposition} We have
+\begin{proposition}\label{prop:analog-corollary}
+We have
 \[
 \mathbf{P}(\mathfrak{S}^R \neq \mathfrak{S}_{\beta N_R}^R) \leqslant N_R e^{-2\beta \frac{R^2}{1+R}}.
 \]
 \end{proposition}
 
 \begin{proof}
-Introducing the Bernoulli random variables from Theorem 9, we have
+Introducing the Bernoulli random variables from Theorem~\ref{thm:main-dpp-thm}, we have
 \[
 \mathbf{P}(\mathfrak{S}^R \neq \mathfrak{S}_{\beta N_R}^R) \leqslant \mathbf{P}(\exists k > \beta N_R, B_k = 1) \leqslant \sum_{k > \beta N_R} \mathbf{P}(B_k = 1) = \sum_{k > \beta N_R} \lambda_k^R \leqslant N_R e^{-2\beta \frac{R^2}{1+R}}
 \]
 as wanted.
 \end{proof}
 
-\begin{remark}
-    In \cite{DecreusefondMoroz2021}, the authors have chosen to truncate the restricted Ginibre DPP to $N_R = R^2$ eigenvalues as seen in result (1) that shows that the truncation error is exponentially small in the deviation $c$ from $N_R$. Though the authors of \cite{DecreusefondMoroz2021} have described this as a "well-known \textit{observation}", it is interesting to observe that this $R^2$ is by no means random and can be theoretically forecasted. This is because turns out to correspond exactly to the expectation of the number of points of the Ginibre DPP. See for yourself : though very interesting to be pointed out, the following proposition is to be found nowhere in the litterature. It motivates to truncate to the expectation and to study the deviation that we have written in Theorem~\ref{thm:main-analog}.
+\begin{remark}\label{rem:truncation}
+    In \cite{DecreusefondMoroz2021}, the authors have chosen to truncate the restricted Ginibre DPP to $N_R = R^2$ eigenvalues as seen in result \eqref{eq:main-result-ginibre} that shows that the truncation error is exponentially small in the deviation $c$ from $N_R$. Though the authors of \cite{DecreusefondMoroz2021} have described this as a "well-known \textit{observation}", it is interesting to observe that this $R^2$ is by no means random and can be theoretically forecasted. This is because turns out to correspond exactly to the expectation of the number of points of the Ginibre DPP. See for yourself : though very interesting to be pointed out, the following proposition is to be found nowhere in the litterature. It motivates to truncate to the expectation and to study the deviation that we have written in Theorem~\ref{thm:main-analog}.
 \end{remark}
 
 \begin{proposition} The expected number of points $\mathbf{E}[|\mathfrak{S}_R^G|]$ that will come out from the restricted Ginibre DPP to $\mathcal{B}(0,R)$ is exactly $R^2$ (here, $R$ can be any positive real number).
@@ -427,12 +428,12 @@ Since $D(0,1)$ is open, denoting $m := \max_{z \in \Lambda} |z|$, we have $m < 1
 \begin{align*}
 \|k_{N_R}^R - k\|_{\infty, \Lambda} &= \left\| \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) x^k \bar{y}^k \right\|_{\infty, \Lambda} \\
 &\leqslant \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) \|x^k \bar{y}^k\|_{\infty, \Lambda} \\
-&\leqslant \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) m^{2k} \xrightarrow[N \to \infty]{} 0
+&\leqslant \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) m^{2k} \xrightarrow[R \to 1^-]{} 0
 \end{align*}
 since $ N_R \xrightarrow[R \to 1^-]{} +\infty $.
 \end{proof}
 
-\begin{theorem} \label{thm:cvg-in-law-dpp} (Proposition 3.10, \cite{ShiraiTakahashi2003})
+\begin{theorem}\label{thm:cvg-in-law-dpp} (Proposition 3.10, \cite{ShiraiTakahashi2003})
 Let $(K_n)_{n \ge 0}$ be integral operators with nonnegative continuous kernels $k_n(x,y)$. Assume that $K_n$ are bounded hermitian locally trace class integral operators. Assume that $(k_n)_{n \ge 0}$ converges to a kernel $k$ uniformly on each compact as $n \to \infty$. Then, the kernel $k$ defines an integral operator $K$ that is also, bounded, hermitian, and locally trace class. Furthermore, the determinantal measures, i.e. the DPP probability laws $\mu_n$ associated to the DPP induced by the integral operators $K_n$, weakly converge to the determinantal probabilty measure $\mu$ induced by $K$.
 \end{theorem}
 
@@ -445,7 +446,7 @@ Still motivated by the question of the convergence for our variants of the Bergm
 \begin{equation}
 \mathcal W_{KR} ( \mathfrak S^R, \mathfrak S) \xrightarrow[R \to 1^-]{} 0
 \end{equation}
-\begin{equation} \label{e}
+\begin{equation}\label{middle-conjecture}
 \mathcal W_{KR} ( \mathfrak S^R_{N_R}, \mathfrak S^R ) \xrightarrow[R \to 1^-]{} 0
 \end{equation}
 \begin{equation}
@@ -453,30 +454,29 @@ Still motivated by the question of the convergence for our variants of the Bergm
 \end{equation}
 And more generally, under what assumption on $ N_R $, besides going to infinity as $ R \to 1^- $, do these claims hold or not. 
 
-We provide an element of answer to the very last question for (5) in the form of a sufficient condition in the following result. For the rest, these questions are open. Note that two of these claims would imply the third one via the triangular inequality for the distance $ \mathcal W_{KR} $.
+We provide an element of answer to the very last question for \eqref{middle-conjecture} in the form of a sufficient condition in the following result. For the rest, these questions are open. Note that two of these claims would imply the third one via the triangular inequality for the distance $ \mathcal W_{KR} $.
 \end{remark}
 
 \begin{proposition} Let $ \varepsilon = 1 - R $. If 
-\begin{equation}
+\begin{equation}\label{strong-assumption-n}
 N_\varepsilon \underset{\varepsilon \to 0^+}{\sim} \frac{1}{\varepsilon^{1+\delta}},
 \end{equation}
-then (5) holds.
+then \eqref{middle-conjecture} holds.
 \end{proposition}
 
-More generally, (5) holds if 
-\begin{equation}
+More generally, \eqref{middle-conjecture} holds if 
+\begin{equation}\label{weak-assumption-n}
 2N_\varepsilon  \log(1-\varepsilon) - \log(\varepsilon) \xrightarrow[\varepsilon \to 0^+]{} - \infty .
 \end{equation}
 
 \begin{proof}
 
-Assuming (7), we have
+Assuming \eqref{strong-assumption-n}, we have
 \begin{align*}
-    2N_\varepsilon \log(1-\varepsilon) &\leqslant - 2N_\varepsilon / \varepsilon \\
-                                       &\underset{\varepsilon \to 0^+}{\sim} - 2 \varepsilon^\delta
-                                       &\xrightarrow[\varepsilon \to 0^+]{} - \infty 
+    2N_\varepsilon \log(1-\varepsilon) &\leqslant - 2N_\varepsilon \varepsilon \\
+                                       &\underset{\varepsilon \to 0^+}{\sim} - 2 \varepsilon^{-\delta}
 \end{align*}
-So (8) holds and it suffices to show (5) assuming (8).
+So, knowing how logs compare to power functions at zero, \eqref{weak-assumption-n} holds and it suffices to show \eqref{middle-conjecture} assuming \eqref{weak-assumption-n}.
 
 We have
 \begin{align*}
@@ -487,14 +487,15 @@ We have
 We have the result.
 \end{proof}
 
-\begin{remark} In particular, considering $N_R$ from Theorem 15, convergence holds in the Wasserstein sense holds replacing $ N_R$ by $ N_R^{1+\delta} $.
+\begin{remark} In particular, considering $N_R$ from Theorem~\ref{thm:main-analog}, convergence holds in the Wasserstein sense holds replacing $ N_R$ by $ N_R^{1+\delta} $.
 \end{remark}
 
 \section{The Bergman DPP on other regions}
 
-We now consider a variant of the previous restriction. A sight at figure~\ref{fig:main-fig} in the introduction shows that the points in the Bergman DPP are very highly repelled from the center, and very intensely concentrated at the border of the disc they're living in. The following was shown in \cite{ZerosGaussianPowerSeries} :
+We now consider a variant of the previous restriction. A sight at Figure~\ref{fig:main-fig} in the introduction shows that the points in the Bergman DPP are very highly repelled from the center, and very intensely concentrated at the border of the disc they're living in. The following was shown in \cite{ZerosGaussianPowerSeries} :
 
-\begin{theorem} The law of the set of the moduli $\{|X_k|, k \ge 1\}$ of the points that come out from the Bergman determinantal point process is exactly the law of the set
+\begin{theorem}\label{thm:moduli}
+The law of the set of the moduli $\{|X_k|, k \ge 1\}$ of the points that come out from the Bergman determinantal point process is exactly the law of the set
 \[
 \{U_k^{1/(2k)}, k \ge 1\}
 \]
@@ -503,7 +504,7 @@ where $(U_k)_{k \ge 1}$ is a sequence of independent, uniform in $[0,1]$ random 
 
 \begin{remark} (Conjecture)
 
-According to observations (see Figure 1), we may conjecture that, conditionnally on the set $I = \{n \ge 0, B_n = 1\}$ of active Bernoulli random variables, the law of the set of moduli $\{|X_k|, k \in I\}$ of the points for the \textit{restricted} Bergman determinantal point process is exactly the law of the set
+According to observations (see Figure~\ref{fig:main-fig}), we may conjecture that, conditionnally on the set $I = \{n \ge 0, B_n = 1\}$ of active Bernoulli random variables, the law of the set of moduli $\{|X_k|, k \in I\}$ of the points for the \textit{restricted} Bergman determinantal point process is exactly the law of the set
 \[
 \{U_k^{1/(2k)}, k \in I\}
 \]
@@ -516,7 +517,7 @@ We have the following.
 
 We have, for all $x \in [0,1]$
 \[
-\mathbf{P}(m \leqslant x) = 1 - \prod_{k=1}^n (1 - x^{2k})
+\mathbf{P}(m \leqslant x) = 1 - \prod_{k=1}^n (1 - x^{2k}).
 \]
 \end{proposition}
 
@@ -524,11 +525,11 @@ We have, for all $x \in [0,1]$
 
 We have
 \[
-\mathbf{P}(U_k^{1/(2k)} \ge x) = \mathbf{P}(U_k \ge x^{2k}) = 1 - x^{2k}
+\mathbf{P}(U_k^{1/(2k)} \ge x) = \mathbf{P}(U_k \ge x^{2k}) = 1 - x^{2k}.
 \]
-According to Theorem 26, we have
+According to Theorem~\ref{thm:moduli}, we have
 \[
-\mathbf{P}(m \ge x) = \prod_{k=1}^n \mathbf{P}(U_k^{1/(2k)} \ge x) = \prod_{k=1}^n (1 - x^{2k})
+\mathbf{P}(m \ge x) = \prod_{k=1}^n \mathbf{P}(U_k^{1/(2k)} \ge x) = \prod_{k=1}^n (1 - x^{2k}).
 \]
 The proof is complete.
 \end{proof}
@@ -584,14 +585,15 @@ Z(A) = \{z \in \mathbb{C}, |z| \in A\}.
 \]
 \end{definition}
 
-\begin{remark} The previous proof actually shows that it is also feasible to compute the restriction to a domain of the form $ Z(A) $, yielding eigenvalues
+\begin{remark}\label{rem:general-eigenvalues}
+The previous proof actually shows that it is also feasible to compute the restriction to a domain of the form $ Z(A) $, yielding eigenvalues
 \[
 \lambda_n^A = (2n+2)\int_A r^{2n+1} \mathrm dr,
 \] 
 with the same corresponding eigenfunctions up to a normalization factor. The proof is essentially identical replacing $ \int_r^R $ by $ \int_A $ and renormalizing the eigenfunctions.
 \end{remark}
 
-Not only is it interesting in itself, the following proposition will be necessary for the proof of next theorem.
+Not only is it interesting itself, the following proposition will be necessary for the proof of next theorem.
 
 \begin{proposition} Let $ A $ and $B$ be two closed subsets of $ [0,1] $ such that $ A \subset B $. Consider the Bergman DPP $ \mathfrak S^A $ (resp. $ \mathfrak S^B $) restricted to $Z(A)$ (resp. to $Z(B)$). Denote $ \lambda^A_n $ (resp. $ \lambda^B_n $) its $n$-th eigenvalue (the (only) one associated to the eigenfunction which is a monomial of degree $n$)
 
@@ -603,19 +605,19 @@ Then we have
 
 \begin{proof}
 
-This is an immediate corollary of Remark 34.
+This is an immediate corollary of Remark~\ref{rem:general-eigenvalues}.
 
 \end{proof}
 
-\begin{remark} 
-    Here we have thus constructed restrictions of the Bergman DPP to domains of the form $ Z([0,R]) $ and $ Z([r,R]) $. These restrictions are of interest for the simulation because as opposed to the original Bergman process, they exhibit a finite number of points almost surely. However, the main << loss >> induced by such restrictions, clearly, is that we lack the possibility to simulate points in the annulus $ Z([1-\varepsilon,1]) $. But, given Theorem 25 the observations of Figure 1, it seems that it is really a shame since the points seem to be extremely concentrated on the border. A natural idea would be to restrict the Bergman DPP to a region of the form $ Z(A) $ such that $ [1-\varepsilon, 1] \subset A$ instead of $ \mathcal B(0,R) = Z([0,R]) $ for instance. Recalling that simulating an infinite number of points is unfeasible, this approach is quite doomed to failure as we show in the next result.
+\begin{remark}\label{rem:adherence-property}
+    Here we have thus constructed restrictions of the Bergman DPP to domains of the form $ Z([0,R]) $ and $ Z([r,R]) $. These restrictions are of interest for the simulation because as opposed to the original Bergman process, they exhibit a finite number of points almost surely. However, the main « loss » induced by such restrictions, clearly, is that we lack the possibility to simulate points in the annulus $ Z([1-\varepsilon,1]) $. But, given the observations of Figure~\ref{fig:main-fig}, it seems that it is really a shame since the points seem to be extremely concentrated on the border. A natural idea would be to restrict the Bergman DPP to a region of the form $ Z(A) $ such that $ [1-\varepsilon, 1] \subset A$ instead of $ \mathcal B(0,R) = Z([0,R]) $ for instance. Recalling that simulating an infinite number of points is unfeasible, this approach is quite doomed to failure as we show in the next result.
 \end{remark}
 
 \begin{theorem} The restriction of the Bergman DPP to any region of the form $ Z(A) $ ($ A \subset [0,1] $) that contains $ T(1-\varepsilon,1) = Z([1-\varepsilon,1]) $ exhibits an infinite number of points almost surely.
 \end{theorem}
 
 \begin{proof}
-As explained in Remark 31, such restriction yields the eigenvalues
+As explained in Remark~\ref{rem:general-eigenvalues}, such restriction yields the eigenvalues
 \[
 \lambda_n^A = (2n+2)\int_A r^{2n+1} \mathrm d r .
 \]
@@ -630,21 +632,23 @@ The series $ \displaystyle \sum_{n\ge 0} (1-\varepsilon)^{2n+2} $ is convergent,
     So far we have considered the families of regions $ \mathcal F_1 = (Z([1-\varepsilon, 1]))_{\varepsilon \in (0,1]} $, $ \mathcal F_2 = (Z([0,R]))_{R \in [0,1)} $ and $ \mathcal F_3 = (Z([r,R]))_{\substack{r,R \in [0,1) \\ r < R }} $. Although we have just shown that the regions of $ \mathcal F_1 $ are not a good choice for feasible simulation, this family satisfies the following property :
 \end{remark}
 
-\begin{center} 
-    (A) For all $ X \in \mathcal F$, for all $ \delta > 0 $, the (topological) interior of $Z([1-\delta, 1]) \cap X$ is nonempty.
-\end{center}
+\begin{center}\label{property-a}
+    \hfill For all $ X \in \mathcal F$, for all $ \delta > 0 $, the (topological) interior of $Z([1-\delta, 1]) \cap X$ is nonempty. \hfill (A)
+\end{center} 
 
-In other words, (the interior of) the regions $X \in \mathcal F_1$ is not included in some $ Z([0,R]) $ (with $ R < 1 $) : its interior « touches » the unit circle (topologically). We have explained in Remark 36 why this property matters. Note that as opposed to $\mathcal F_1$, the families $\mathcal F_2$ and $\mathcal F_3$ do not satisfy this property.
+In other words, (the interior of) the regions $X \in \mathcal F_1$ is not included in some $ Z([0,R]) $ (with $ R < 1 $) : its interior « touches » the unit circle (topologically). We have explained in Remark~\ref{rem:adherence-property} why this property matters. Note that as opposed to $\mathcal F_1$, the families $\mathcal F_2$ and $\mathcal F_3$ do not satisfy this property.
 
-It is thus natural to ask the following question : does there exist a family of regions $ \mathcal F $, for which (A) holds and retricted to which the Bergman DPP exhibits a finite number of points almost surely ?
+It is thus natural to ask the following question : does there exist a family of regions $ \mathcal F $, for which \hyperref[property-a]{(A)} holds and retricted to which the Bergman DPP exhibits a finite number of points almost surely ?
 
 Recall that the Lebesgue measure $ \lambda(\mathcal B(0,1)) $ of the whole unit disc $ \mathcal B(0,1)$ is $ \pi $. Another interesting property verified by the three families of regions $ \mathcal F_1 $, $ \mathcal F_2 $ and $ \mathcal F_3 $ is the following :
 
-(B) For all $ \delta > 0 $, there exists $ Z \in \mathcal F $ such that $ \lambda (Z) \geqslant \pi - \delta $.
+\begin{center}\label{property-b}
+    \hfill For all $ \delta > 0 $, there exists $ Z \in \mathcal F $ such that $ \lambda (Z) \geqslant \pi - \delta $. \hfill (B)
+\end{center}
 
-Intuitively, the most the region to which the Bergman DPP is restricted covers $ \mathcal B(0,1) $, the closest the approcimation should be. This is why property (B) matters too (although we do not here provide the probabilistic results that express this idea). 
+Intuitively, the most the region to which the Bergman DPP is restricted covers $ \mathcal B(0,1) $, the closest the approcimation should be. This is why property~\hyperref{property-b} matters too (although we do not here provide the probabilistic results that express this idea). 
 
-So, the question is now : can we find a family of regions $ \mathcal F $, such that the Bergman DPP restricted to any $ Z \in \mathcal F $ exhibits a finite number of points almost surely, \textit{and} that satisfies both properties (A), (B) ?
+So, the question is now : can we find a family of regions $ \mathcal F $, such that the Bergman DPP restricted to any $ Z \in \mathcal F $ exhibits a finite number of points almost surely, \textit{and} that satisfies both properties \hyperref[property-a]{(A)}, \hyperref[property-b]{(B)} ?
 
 We now answer this question in the positive and explicitely contruct such family.
 
@@ -673,7 +677,7 @@ exhibits a finite number of points almost surely. Furthermore, choosing $ a_n $'
 \begin{proof}
 First note that such sequences will be valued in $(0,1)$ because the first terms $ a_0, b_0$ are (must be) chosen in $ (0,1) $, and recursively, assuming that $ a_0, ..., a_n, b_0, ..., b_n $ are well-defined and in $(0,1)$ for some $ n \in \mathbf N$, we see that so are $ a_{n+1}, b_{n+1} $ by a sight at the recurrence relation and the fact that $ u_n > 0 $. 
 
-Then, we have $ a_0 < b_0 < ... < a_n < b_n < ... \,$. First, $ a_0, b_0 $ are (must be) chosen to satisfy $ a_0 < b_0 $. Recursively, if, for some $ n \in \mathbf N $, we have $ a_0 < b_0 < ... < a_n < b_n $, then $ a_{n+1} > b_{n+1} $ by assumption, and it remains to show that $ b_{n+1} > a_{n+1} $.
+Then, let us show that we have $ a_0 < b_0 < ... < a_n < b_n < ... \,$. First, $ a_0, b_0 $ are (must be) chosen to satisfy $ a_0 < b_0 $. Recursively, if, for some $ n \in \mathbf N $, we have $ a_0 < b_0 < ... < a_n < b_n $, then $ a_{n+1} > b_{n} $ by assumption, and it remains to show that $ b_{n+1} > a_{n+1} $.
 
 We have
 \[
@@ -712,7 +716,8 @@ Recall that the Bergman restriction has a finite number of points almost surely 
     \sum_{n \ge 0} \lambda_n &= \sum_{n \ge 0} \sum_{k \ge 0} b_k^{2n+2} - a_k^{2n+2} \\
     &= \sum_{k \ge 0} \sum_{n \ge 0} b_k^{2n+2} - a_k^{2n+2} \\
     &= \sum_{k \ge 0} \frac{b_k^2}{1-b_k^2} - \frac{a_k^2}{1-a_k^2} \\
-    &= \sum_{k \ge 0} u_k  \\
+    &= \frac{b_0^2}{1-b_0^2} - \frac{a_0^2}{1-a_0^2} + \sum_{k \ge 1} \frac{b_k^2}{1-b_k^2} - \frac{a_k^2}{1-a_k^2} \\
+    &= \frac{b_0^2}{1-b_0^2} - \frac{a_0^2}{1-a_0^2} + \sum_{k \ge 0} u_k \\
     &< +\infty.
 \end{align*}
 This prooves the main claim. The rest follows easily.
@@ -720,7 +725,7 @@ This prooves the main claim. The rest follows easily.
 
 \section{General deviations results for determinantal point processes}
 
-As stated in Remark 18, our approach indicates that truncating restricted DPPs to a number of points equal to the expectation of their cardinality yields strong results such as Theorem 15 and Proposition 17. We here further study the deviation of this cardinality through the two following results. These results are general as they apply not only to the Bergman kernel but to any determinantal point process.
+As stated in Remark~\ref{rem:truncation}, our approach indicates that truncating restricted DPPs to a number of points equal to the expectation of their cardinality yields strong results such as Theorem~\ref{thm:main-analog} and Proposition~\ref{prop:analog-corollary}. We here further study the deviation of this cardinality through the following result. It is worthy to note that it is general as it applies not only to the Bergman kernel but to any determinantal point process.
 
 \begin{theorem}
 Let $\mathfrak S $ be a determinantal point process. Assume that its associated integral operator is trace-class. Denote $m$ the average number of points of $ \mathfrak S$. Then, $ m $ is finite, and we have for $ c \in (0,1) $,
@@ -738,7 +743,7 @@ and for $ c > 0 $,
 \end{remark}
 
 \begin{proof}
-Denote $B_n$ the $n$-th Bernoulli random variable (see Theorem ??), we have $ B_n \sim \mathrm{Ber} (\lambda_n) $. Denote $ S=\sum\limits_{n=0}^\infty B_n$. Note that $m = \mathbf E(|\mathfrak S |) = \mathbf E(S)$. The associated integral operator is trace-class, so $m$ is finite. We have, for $ c \in (0,1) $ :
+Denote $B_n$ the $n$-th Bernoulli random variable (see Theorem~\ref{thm:main-dpp-thm}), we have $ B_n \sim \mathrm{Ber} (\lambda_n) $. Denote $ S=\sum\limits_{n=0}^\infty B_n$. Note that $m = \mathbf E(|\mathfrak S |) = \mathbf E(S)$. The associated integral operator is trace-class, so $m$ is finite. We have, for $ c \in (0,1) $ :
 \begin{align*}
     \mathbf P( | \mathfrak S | \leqslant (1-c)m ) &= \mathbf P( S \leqslant (1-c)m ) \\
     &= \mathbf P\left[ (1-c)^{(1-c)m} \leqslant (1-c)^{S} \right] \\
