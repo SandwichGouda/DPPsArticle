@@ -79,7 +79,7 @@ whenever $ R > c$, where $ \mathcal W_{KR} $ denotes the Kantorovitch-Rubinstein
 
 This is all very nice and convenient, but only applies to one DPP law, the Ginibre DPP. In this paper, we extend this work, by constructing restricted and restricted-trucated versions of the Bergman DPP, which will henceforth be at the very core of our study. We find a good compromise as to the right number of points depending on the chosen radius $R$ to truncate our restricted DPP and provide the theoretical results that ensure that the use of the simulation algorithm presented in \cite{DecreusefondMoroz2021} produces a result that is not blatantly far from the (theoretical and nonfeasible) simulation of the restricted Bergman DPP. In other words, the truncation error is small when choosing the right number of points, hence providing an answer to the fifth open question asked in \cite{Decreusefond2016} for this DPP. We also provide some general results for DPPs that are not specific to the Bergman kernel.
 
-\begin{figure}[h]
+\begin{figure}[h] \label{fig:main-fig}
     \centering
     \begin{minipage}{0.45\textwidth}
         \centering
@@ -176,13 +176,13 @@ We refer to \cite{ConwayOpTheory2000} and \cite{ConwayFunctAnalysis2019} for fur
     A locally finite and simple point process on $E$ is a determinantal point process if its correlation functions with respect to the reference Radon measure $\lambda$ on $E$ exist and are of the form
     \[
         \rho_n(x_1, \dots, x_n) = \det(k(x_i, x_j))_{1 \le i,j \le n},
-    \] where $k$ satisfies \ref{hyp:mainhypothesis}.
+    \] where $k$ satisfies Hypothesis~\ref{hyp:mainhypothesis}.
 \end{definition}
 
 The dynamics of DPPs are described by the following fundamental theorem.
 
-\begin{theorem}
-Under Hypothesis 7, consider Mercer's decomposition of the kernel $k$ of the determinantal point process $\eta$:
+\begin{theorem} \label{thm:main-dpp-thm}
+Under Hypothesis~\ref{hyp:main-hypothesis}, consider Mercer's decomposition of the kernel $k$ of the determinantal point process $\eta$:
 \[
 k(x,y) = \sum_{k=1}^n \lambda_k \phi_k(x) \overline{\phi_k(y)}.
 \]
@@ -295,7 +295,7 @@ This prooves that this family is an orthonormal family of eigenfunctions of the 
 \end{proof}
 
 \begin{remark} 
-    The fact that the eigenvalues and eigenfunctions of the Bergman DPP are explicitly computable makes it very manipulatable. Let us mention that restricting any DPP on any compact rarely ever gives birth to such well-behaving results. The only DPP that was ever discovered to enjoy such properties if the Ginibre DPP as shown in \cite{DecreusefondMoroz2021}.
+    The fact that the eigenvalues and eigenfunctions of the Bergman DPP are explicitly computable makes it very manipulatable. Let us mention that restricting any DPP on any compact hardly ever gives birth to such well-behaving results. The only DPP that was ever discovered to enjoy such properties if the Ginibre DPP as shown in \cite{DecreusefondMoroz2021}.
 \end{remark}
 
 We will now make use of Optimal transport tools and show that, when choosing the right number of points (which we will exhibit), the law induced by the truncated version of this kernel is close (in the Wasserstein sense) to the non-truncated restriction.
@@ -313,14 +313,14 @@ We refer to \cite{Villani2021} and \cite{Villani2009} for proper introductions t
 It is a distance on the set of point process laws. See [5] for a thorough study of Wasserstein distances on configuration spaces. The following result exhibits a good compromise as to the number of points the Bergman ought to be truncated to.
 \end{definition}
 
-\begin{theorem}
+\begin{theorem} \label{thm:main-analog}
 Let
 \[
 N_R := \sum_{n=0}^\infty R^{2n+2} = \frac{R^2}{(1-R)(1+R)}.
 \]
-Denote $\mathfrak{S}^R$ the law of the restricted Bergman to a compact ball of radius $R$ centered at 0 and $\mathfrak{S}_\alpha^R$ the law of its truncation to $\alpha$ points.
+Denote $\mathfrak{S}^R$ the law of the restricted Bergman to a compact ball of radius $R$ centered at 0 and $\mathfrak{S}_\alpha^R$ the law of its truncation to $N$ eigenvalues.
 
-If we truncate it to $\beta N_R$ points, we have
+If we truncate it to $\beta N_R$ eigenvalues, we have
 \begin{equation}
 \mathcal{W}_{KR}(\mathfrak{S}^R, \mathfrak{S}_{\beta N_R}^R) \leqslant N_R e^{-2\beta g(R)}
 \end{equation}
@@ -365,7 +365,7 @@ as wanted.
 \end{proof}
 
 \begin{remark}
-    In \cite{DecreusefondMoroz2021}, the authors have chosen to truncate the restricted Ginibre DPP to $N_R = R^2$ points as seen in result (1) that shows that the truncation error is exponentially small in the deviation $c$ from $N_R$. Though the authors of \cite{DecreusefondMoroz2021} have described this as a "well-known \textit{observation}", it is interesting to observe that this $R^2$ is by no means random and can be theoretically forecasted. This is because turns out to correspond exactly to the expectation of the number of points of the Ginibre DPP. See for yourself : though very interesting to be pointed out, the following proposition is to be found nowhere in the litterature. It motivates to truncate to the expectation and to study the deviation that we have written in Theorem 15.
+    In \cite{DecreusefondMoroz2021}, the authors have chosen to truncate the restricted Ginibre DPP to $N_R = R^2$ eigenvalues as seen in result (1) that shows that the truncation error is exponentially small in the deviation $c$ from $N_R$. Though the authors of \cite{DecreusefondMoroz2021} have described this as a "well-known \textit{observation}", it is interesting to observe that this $R^2$ is by no means random and can be theoretically forecasted. This is because turns out to correspond exactly to the expectation of the number of points of the Ginibre DPP. See for yourself : though very interesting to be pointed out, the following proposition is to be found nowhere in the litterature. It motivates to truncate to the expectation and to study the deviation that we have written in Theorem~\ref{thm:main-analog}.
 \end{remark}
 
 \begin{proposition} The expected number of points $\mathbf{E}[|\mathfrak{S}_R^G|]$ that will come out from the restricted Ginibre DPP to $\mathcal{B}(0,R)$ is exactly $R^2$ (here, $R$ can be any positive real number).
@@ -373,7 +373,7 @@ as wanted.
 
 \begin{proof}
 
-According to the fundamental theorem of DPPs (Theorem ? in this paper), this expectation is $\sum\limits_{n \ge 0} \lambda_n^R$ where $\lambda_n^R$ denotes the $n$-th eigenvalue of the restricted Ginibre integral operator.
+According to the fundamental theorem of DPPs (Theorem~\ref{thm:main-dpp-thm} in this paper), this expectation is $\sum\limits_{n \ge 0} \lambda_n^R$ where $\lambda_n^R$ denotes the $n$-th eigenvalue of the restricted Ginibre integral operator.
 
 We have (see \cite{DecreusefondMoroz2021}) $\lambda_n^R = \frac{\gamma(n+1, R^2)}{n!}$ where $\gamma$ stands for the incomplete gamma function $\gamma(n,x) = \int_0^x t^{n-1}e^{-t} \mathrm dt$.
 
@@ -392,7 +392,7 @@ as wanted.
 
 The following results further confirm this idea.
 
-\begin{proposition} Denoting $\mathfrak{S}^R$ the law of the restricted Bergman to a compact ball of radius $R$ centered at the origin and $\mathfrak{S}_N^R$ the law of its truncation to $\alpha$ points We have
+\begin{proposition} Denoting $\mathfrak{S}^R$ the law of the restricted Bergman to a compact ball of radius $R$ centered at the origin and $\mathfrak{S}_N$ the law of its truncation to $N$ eigenvalues, we have
 \[
 \mathfrak{S}_N^R \xrightarrow[N \to \infty]{} \mathfrak{S}^R,
 \]
@@ -401,19 +401,19 @@ in distribution.
 
 \begin{proof}
 
-The goal is to reduce this result to Theorem 24. Denote $\|\cdot\|_\infty$ the norm of uniform convergence. Let $\Lambda \subset \mathcal{B}(0,R)$ be compact. Denote $k_N^R$ the truncated kernel to $N$ points and $k^R$ the asymptotic one. We have
+The goal is to reduce this result to Theorem~\ref{thm:cvg-in-law-dpp}. Denote $\|\cdot\|_\infty$ the norm of uniform convergence. Let $\Lambda \subset \mathcal{B}(0,R)$ be compact. Denote $k_N^R$ the truncated kernel to $N$ eigenvalues and $k^R$ the asymptotic one. We have
 \[
 \|k_N^R - k^R\|_{\infty, \Lambda} = \left\| \frac{1}{\pi} \sum_{k=N}^\infty (k+1) x^k \bar{y}^k \right\|_{\infty, \Lambda}.
 \]
 Observe that $\Lambda \subset \mathcal{B}(0,R)$ implies that
 \begin{align*}
-\|k_{N}^R - k_R\|_{\infty, \Lambda} &\leqslant \frac{1}{\pi} \sum_{k=N}^\infty (k+1) \|x^k \bar{y}^k\|_{\infty, \Lambda} \\
+\|k_{N}^R - k^R\|_{\infty, \Lambda} &\leqslant \frac{1}{\pi} \sum_{k=N}^\infty (k+1) \|x^k \bar{y}^k\|_{\infty, \Lambda} \\
 &\leqslant \frac{1}{\pi} \sum_{k=N}^\infty (k+1) R^{2k} \xrightarrow[N \to \infty]{} 0.
 \end{align*}
 The proof is complete.
 \end{proof}
 
-\begin{proposition} Denoting $\mathfrak{S}$ the original Bergman DPP, we have
+\begin{proposition} Denote $\mathfrak{S}$ the original Bergman DPP and consider truncations $ \mathfrak{S}_{N_R}^R $ to $ N_R $ eigenvalues of its restriction to the disc or radius $R$. Provided that $ N_R \xrightarrow[R \to 1^-]{} +\infty $, we have
 \[
 \mathfrak{S}_{N_R}^R \xrightarrow[R \to 1^-]{} \mathfrak{S},
 \]
@@ -421,23 +421,23 @@ in distribution.
 \end{proposition}
 
 \begin{proof}
-Denote $k_{N_R}^R$ the restricted-truncated (to $N$ points) kernel and $k$ the asymptotic one. Consider a compact $\Lambda \subset D(0,1)$. Recall that the Bergman kernel $k(x,y) = \frac{1}{\pi}\frac{1}{(1-x\bar{y})^2}$ is defined on the open disc $D(0,1)$ (this relation would not make sense on some points of the boundary).
+Denote $k_{N_R}^R$ the restricted-truncated (to $N_R$ eigenvalues) kernel and $k$ the asymptotic one. Consider a compact $\Lambda \subset D(0,1)$. Recall that the Bergman kernel $k(x,y) = \frac{1}{\pi}\frac{1}{(1-x\bar{y})^2}$ is defined on the open disc $D(0,1)$ (this relation would not make sense on some points of the boundary).
 
 Since $D(0,1)$ is open, denoting $m := \max_{z \in \Lambda} |z|$, we have $m < 1$. So, we have
 \begin{align*}
 \|k_{N_R}^R - k\|_{\infty, \Lambda} &= \left\| \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) x^k \bar{y}^k \right\|_{\infty, \Lambda} \\
-&\leqslant \frac{1}{\pi} \sum_{k=N}^\infty (k+1) \|x^k \bar{y}^k\|_{\infty, \Lambda} \\
-&\leqslant \frac{1}{\pi} \sum_{k=N}^\infty (k+1) m^{2k} \xrightarrow[N \to \infty]{} 0
+&\leqslant \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) \|x^k \bar{y}^k\|_{\infty, \Lambda} \\
+&\leqslant \frac{1}{\pi} \sum_{k=N_R}^\infty (k+1) m^{2k} \xrightarrow[N \to \infty]{} 0
 \end{align*}
-We conclude using Theorem 24.
+since $ N_R \xrightarrow[R \to 1^-]{} +\infty $.
 \end{proof}
 
-\begin{theorem} (Proposition 3.10, \cite{ShiraiTakahashi2003})
-Let $(K_n)_{n \ge 0}$ be integral operators with nonnegative continuous kernels $k_n(x,y)$. Assume that $K_n$ are bounded hermitian locally trace class integral operators. Assume that $(k_n)_{n \ge 0}$ converges to a kernel $k$ uniformly on each compact as $n \to \infty$. Then, the kernel $k$ defines an integral operator $K$ that is also a bounded hermitian locally trace class. Then the determinantal measures, i.e. the DPP probability laws $\mu_n$ associated to the DPP induced by the integral operators $K_n$ weakly converge to the determinantal probabilty measure $\mu$ induced by $K$.
+\begin{theorem} \label{thm:cvg-in-law-dpp} (Proposition 3.10, \cite{ShiraiTakahashi2003})
+Let $(K_n)_{n \ge 0}$ be integral operators with nonnegative continuous kernels $k_n(x,y)$. Assume that $K_n$ are bounded hermitian locally trace class integral operators. Assume that $(k_n)_{n \ge 0}$ converges to a kernel $k$ uniformly on each compact as $n \to \infty$. Then, the kernel $k$ defines an integral operator $K$ that is also, bounded, hermitian, and locally trace class. Furthermore, the determinantal measures, i.e. the DPP probability laws $\mu_n$ associated to the DPP induced by the integral operators $K_n$, weakly converge to the determinantal probabilty measure $\mu$ induced by $K$.
 \end{theorem}
 
 \begin{remark} 
-A look at the proof of Theorem 15 hints that
+A look at the proof of Theorem~\ref{thm:main-analog} hints that
 \begin{equation}
 \mathcal W_{KR} ( \mathfrak S^R_{N}, \mathfrak S^R ) \xrightarrow[N \to \infty]{} 0    
 \end{equation}
@@ -445,7 +445,7 @@ Still motivated by the question of the convergence for our variants of the Bergm
 \begin{equation}
 \mathcal W_{KR} ( \mathfrak S^R, \mathfrak S) \xrightarrow[R \to 1^-]{} 0
 \end{equation}
-\begin{equation}
+\begin{equation} \label{e}
 \mathcal W_{KR} ( \mathfrak S^R_{N_R}, \mathfrak S^R ) \xrightarrow[R \to 1^-]{} 0
 \end{equation}
 \begin{equation}
@@ -492,7 +492,7 @@ We have the result.
 
 \section{The Bergman DPP on other regions}
 
-We now consider a variant of the previous restriction. A sight at Figure 1 in the introduction shows that the points in the Bergman DPP are very highly repelled from the center, and very intensely concentrated at the border of the disc they're living in. The following was shown in \cite{ZerosGaussianPowerSeries} :
+We now consider a variant of the previous restriction. A sight at figure~\ref{fig:main-fig} in the introduction shows that the points in the Bergman DPP are very highly repelled from the center, and very intensely concentrated at the border of the disc they're living in. The following was shown in \cite{ZerosGaussianPowerSeries} :
 
 \begin{theorem} The law of the set of the moduli $\{|X_k|, k \ge 1\}$ of the points that come out from the Bergman determinantal point process is exactly the law of the set
 \[
@@ -725,11 +725,11 @@ As stated in Remark 18, our approach indicates that truncating restricted DPPs t
 \begin{theorem}
 Let $\mathfrak S $ be a determinantal point process. Assume that its associated integral operator is trace-class. Denote $m$ the average number of points of $ \mathfrak S$. Then, $ m $ is finite, and we have for $ c \in (0,1) $,
 \[
-    \mathbf P( | \mathfrak S | \leqslant (1-c) m ) \leqslant \exp( -m(c +(1-c) \log(1-c) ) )
+    \mathbf P( | \mathfrak S | \leqslant (1-c) m ) \leqslant \exp( -m(c +(1-c) \log(1-c) ) ),
 \]
 and for $ c > 0 $,
 \[
-    \mathbf P( | \mathfrak S | \geqslant (1+c) m ) \leqslant \exp( - m (c + (1+c) \log(1+c) )).
+    \mathbf P( | \mathfrak S | \geqslant (1+c) m ) \leqslant \exp( - m ((1+c) \log(1+c) -c)).
 \]
 \end{theorem}
 
@@ -738,7 +738,7 @@ and for $ c > 0 $,
 \end{remark}
 
 \begin{proof}
-Denote $B_n$ the $n$-th Bernoulli random variable (see Theorem 9), we have $ B_n \sim \mathrm{Ber} (\lambda_n) $. Denote $ S=\sum\limits_{n=0}^\infty B_n$. Note that $m = \mathbf E(|\mathfrak S |) = \mathbf E(S)$. The associated integral operator is trace-class, so $m$ is finite. We have, for $ c \in (0,1) $ :
+Denote $B_n$ the $n$-th Bernoulli random variable (see Theorem ??), we have $ B_n \sim \mathrm{Ber} (\lambda_n) $. Denote $ S=\sum\limits_{n=0}^\infty B_n$. Note that $m = \mathbf E(|\mathfrak S |) = \mathbf E(S)$. The associated integral operator is trace-class, so $m$ is finite. We have, for $ c \in (0,1) $ :
 \begin{align*}
     \mathbf P( | \mathfrak S | \leqslant (1-c)m ) &= \mathbf P( S \leqslant (1-c)m ) \\
     &= \mathbf P\left[ (1-c)^{(1-c)m} \leqslant (1-c)^{S} \right] \\
@@ -769,15 +769,10 @@ using $ 1+u \leqslant e^u $,
 \begin{align*}
     &\leqslant (1+c)^{-(1+c)m} \prod_{n=0}^\infty e^{c\lambda_n} \\
     &= \exp(-(1+c)m \log(1+c) +c m) \\
-    &= \exp( m (c -(1+c) \log(1+c) )). \\
+    &= \exp( - m ((1+c) \log(1+c) -c)). \\
 \end{align*}
+This prooves the second part.
 \end{proof}
-
-\begin{remark}
-    The map $ c \mapsto c + (1-c) \log(1-c) $ is a convex increasing function that resembles the identity function on $ [0,1] $. The mapping $ x -(1+x)\log(1+x) $ is increasing until it reaches about $0.6$ at $ x \sim 2.67 $, and then quasi-linearly decreases to $ - \infty $ from this point forward. 
-\end{remark}
-
-We provide a last result which is another information regarding the deviation of this cardinality.
 
 \newpage
 \bibliographystyle{plain}
